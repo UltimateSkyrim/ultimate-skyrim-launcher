@@ -68,7 +68,7 @@ export class MigrationService {
       await this.profileService.setProfilePreference(
         (
           await this.profileService.getProfiles()
-        )[0].real
+        )[0]!.real
       );
       this.logger.debug(
         `New profile is ${await this.profileService.getProfilePreference()}`
@@ -98,8 +98,8 @@ export class MigrationService {
         backedUpProfiles.find((profile) =>
           profile.toLowerCase().includes("potato")
         ) ?? backedUpProfiles[backedUpProfiles.length - 1];
-      await copy(backedUpProfiles[0], standardProfilePath);
-      await copy(backedUpPerformanceProfile, performanceProfilePath);
+      await copy(backedUpProfiles[0]!, standardProfilePath);
+      await copy(backedUpPerformanceProfile!, performanceProfilePath);
     } else {
       // If there is no backup, just use the first one
       this.logger.debug(
@@ -108,8 +108,8 @@ export class MigrationService {
       const performanceProfile =
         profiles.find((profile) => profile.toLowerCase().includes("potato")) ??
         profiles[[profiles].length - 1];
-      await copy(profiles[0], standardProfilePath);
-      await copy(performanceProfile, performanceProfilePath);
+      await copy(profiles[0]!, standardProfilePath);
+      await copy(performanceProfile!, performanceProfilePath);
     }
   }
 

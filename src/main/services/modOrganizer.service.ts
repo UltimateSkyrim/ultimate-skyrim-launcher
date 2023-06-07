@@ -4,10 +4,8 @@ import { ConfigService } from "@/main/services/config.service";
 import psList from "ps-list";
 import { dialog } from "electron";
 import fs from "fs";
-import { parse, stringify } from "js-ini";
-import { IIniObjectSection } from "js-ini/src/interfaces/ini-object-section";
+import { IIniObject, IIniObjectSection, parse, stringify } from "js-ini";
 import { promisify } from "util";
-import { IIniObject } from "js-ini/lib/interfaces/ini-object";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { EnbService } from "@/main/services/enb.service";
 import { service } from "@loopback/core";
@@ -18,7 +16,7 @@ import { GameService } from "@/main/services/game.service";
 import { ProfileService } from "@/main/services/profile.service";
 import { SystemService } from "@/main/services/system.service";
 import { GraphicsService } from "@/main/services/graphics.service";
-import { ModOrganizerIni } from "@/ModOrganizer.ini";
+import type { ModOrganizerIni } from "@/ModOrganizer.ini";
 import { Logger, LoggerBinding } from "@/main/logger";
 
 export const enum MO2Names {

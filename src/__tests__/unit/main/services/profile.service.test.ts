@@ -1,5 +1,5 @@
 import mockFs from "mock-fs";
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/modpack-metadata";
 import {
   createStubInstance,
   expect,
@@ -9,7 +9,7 @@ import {
 import { ConfigService } from "@/main/services/config.service";
 import { ProfileService } from "@/main/services/profile.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import { mockLogger } from "@/__tests__/unit/support/mocks/logger.mock";
+import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
 
 describe("Profile service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;

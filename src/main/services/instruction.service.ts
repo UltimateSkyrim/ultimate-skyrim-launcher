@@ -1,16 +1,15 @@
-import {
+import type {
   AdditionalInstructions,
   PluginOrModInstruction,
 } from "@/additional-instructions";
-import modpackAdditionalInstructions from "@/additional-instructions.json";
+import modpackAdditionalInstructions from "@/main/wildlander/additional-instructions.json";
 import fs from "fs";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";
-import { ConfigService } from "@/main/services/config.service";
 import { ProfileService } from "@/main/services/profile.service";
 import * as readline from "readline";
 import * as os from "os";
-import { PathLike } from "fs-extra";
+import type { PathLike } from "fs-extra";
 import { WabbajackService } from "@/main/services/wabbajack.service";
 import { Logger, LoggerBinding } from "@/main/logger";
 
@@ -19,7 +18,6 @@ import { Logger, LoggerBinding } from "@/main/logger";
 })
 export class InstructionService {
   constructor(
-    @service(ConfigService) private configService: ConfigService,
     @service(ProfileService) private profileService: ProfileService,
     @service(WabbajackService) private wabbajackService: WabbajackService,
     @inject(LoggerBinding) private logger: Logger
@@ -38,7 +36,7 @@ export class InstructionService {
     return modpackAdditionalInstructions as AdditionalInstructions;
   }
 
-  async execute(instructions: AdditionalInstructions, target?: string) {
+  async execute(instructions: AdditionalInstructions, target?: string): Promise<boolean | void> {
     const modpackVersion = await this.wabbajackService.getModpackVersion();
 
     for (const instruction of instructions) {

@@ -17,7 +17,7 @@ import {
 } from "@/renderer/services/service-container";
 import { SelectOption } from "@/renderer/components/BaseDropdown.vue";
 import BaseLabel from "@/renderer/components/BaseLabel.vue";
-import modpack from "@/modpack.json";
+import modpack from "@/main/wildlander/modpack.json";
 import { MODPACK_EVENTS } from "@/main/controllers/modpack/mopack.events";
 import { Prop } from "vue-property-decorator";
 import { WABBAJACK_EVENTS } from "@/main/controllers/wabbajack/wabbajack.events";

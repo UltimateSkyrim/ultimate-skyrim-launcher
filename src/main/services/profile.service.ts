@@ -1,6 +1,6 @@
 import { ConfigService } from "@/main/services/config.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/modpack-metadata";
 import fs from "fs";
 import { not as isNotJunk } from "junk";
 import { copy, existsSync } from "fs-extra";
@@ -112,7 +112,12 @@ export class ProfileService {
   }
 
   async getDefaultPreference() {
-    return (await this.getPhysicalProfiles())[0].name;
+    return (
+      (await this.getPhysicalProfiles())[0]?.name ??
+      (() => {
+        throw new Error("No physical profiles found");
+      })()
+    );
   }
 
   setProfilePreference(profile: string) {

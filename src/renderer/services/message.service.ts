@@ -1,7 +1,7 @@
 import { DIALOG_EVENTS } from "@/main/controllers/dialog/dialog.events";
 import { logger } from "@/main/logger";
-import { IpcService } from "@/renderer/services/ipc.service";
-import { MessageBoxReturnValue } from "electron";
+import type { IpcService } from "@/renderer/services/ipc.service";
+import type { MessageBoxReturnValue } from "electron";
 
 export class MessageService {
   constructor(private ipcService: IpcService) {}

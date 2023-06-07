@@ -1,7 +1,6 @@
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";
 import { app } from "electron";
-import { ConfigService } from "@/main/services/config.service";
 import { ModpackService } from "@/main/services/modpack.service";
 import { LauncherService } from "@/main/services/launcher.service";
 import { platform, type, version } from "os";
@@ -31,7 +30,6 @@ export class StartupService {
   constructor(
     @service(ModpackService) private modpackService: ModpackService,
     @service(LauncherService) private launcherService: LauncherService,
-    @service(ConfigService) private configService: ConfigService,
     @service(WabbajackService) private wabbajackService: WabbajackService,
     @service(ResolutionService) private resolutionService: ResolutionService,
     @service(UpdateService) private updateService: UpdateService,
@@ -68,7 +66,7 @@ export class StartupService {
         execute: async () => {
           const runningBlacklistedProcesses =
             await this.blacklistService.blacklistedProcessesRunning();
-          if (runningBlacklistedProcesses.length > 0) {
+          if (runningBlacklistedProcesses[0]) {
             // Throw an error and don't continue until the process has been closed
             this.logger.debug(
               `Blacklisted process running ${JSON.stringify(

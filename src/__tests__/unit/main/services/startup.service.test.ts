@@ -1,30 +1,23 @@
 import mock from "mock-require";
-// electron-is-dev throws an error if not running in electron
-mock("electron-is-dev", () => {
-  return true;
-});
-
 import { StartupService } from "@/main/services/startup.service";
-import {
-  createStubInstance,
-  sinon,
-  StubbedInstanceWithSinonAccessor,
-} from "@loopback/testlab";
+import { createStubInstance, sinon, StubbedInstanceWithSinonAccessor } from "@loopback/testlab";
 import { ModpackService } from "@/main/services/modpack.service";
 import { LauncherService } from "@/main/services/launcher.service";
-import { ConfigService } from "@/main/services/config.service";
 import { WabbajackService } from "@/main/services/wabbajack.service";
 import { ResolutionService } from "@/main/services/resolution.service";
 import { UpdateService } from "@/main/services/update.service";
 import { BlacklistService } from "@/main/services/blacklist.service";
 import { ErrorService } from "@/main/services/error.service";
 import { WindowService } from "@/main/services/window.service";
-import { mockLogger } from "@/__tests__/unit/support/mocks/logger.mock";
+import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+// electron-is-dev throws an error if not running in electron
+mock("electron-is-dev", () => {
+  return true;
+});
 
 describe("Startup service", () => {
   let mockModpackService: StubbedInstanceWithSinonAccessor<ModpackService>;
   let mockLauncherService: StubbedInstanceWithSinonAccessor<LauncherService>;
-  let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
   let mockWabbajackService: StubbedInstanceWithSinonAccessor<WabbajackService>;
   let mockResolutionService: StubbedInstanceWithSinonAccessor<ResolutionService>;
   let mockUpdateService: StubbedInstanceWithSinonAccessor<UpdateService>;
@@ -37,7 +30,6 @@ describe("Startup service", () => {
   beforeEach(() => {
     mockModpackService = createStubInstance(ModpackService);
     mockLauncherService = createStubInstance(LauncherService);
-    mockConfigService = createStubInstance(ConfigService);
     mockWabbajackService = createStubInstance(WabbajackService);
     mockResolutionService = createStubInstance(ResolutionService);
     mockUpdateService = createStubInstance(UpdateService);
@@ -48,7 +40,6 @@ describe("Startup service", () => {
     startupService = new StartupService(
       mockModpackService,
       mockLauncherService,
-      mockConfigService,
       mockWabbajackService,
       mockResolutionService,
       mockUpdateService,

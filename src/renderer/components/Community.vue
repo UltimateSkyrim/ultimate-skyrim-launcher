@@ -44,7 +44,7 @@ import AppPage from "@/renderer/components/AppPage.vue";
 import BaseLink from "@/renderer/components/BaseLink.vue";
 import ImageWithText from "@/renderer/components/ImageWithText.vue";
 import { Modpack } from "@/modpack-metadata";
-import modpack from "@/modpack.json";
+import modpack from "@/main/wildlander/modpack.json";
 
 @Options({
   components: {

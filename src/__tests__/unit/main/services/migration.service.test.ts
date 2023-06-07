@@ -10,7 +10,7 @@ import mockFs from "mock-fs";
 import { ProfileService } from "@/main/services/profile.service";
 import fs from "fs";
 import { ConfigService } from "@/main/services/config.service";
-import { mockLogger } from "@/__tests__/unit/support/mocks/logger.mock";
+import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
 
 describe("Migration service", () => {
   let migrationService: MigrationService;

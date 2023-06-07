@@ -1,0 +1,38 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "outDir": "../../dist/renderer",
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*",
+        "./src/types/*"
+      ]
+    }
+  },
+  "include": [
+    "./**/*.vue",
+    "./**/*.tsx",
+    "./**/*.ts",
+    "./types/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../main"
+    },
+    {
+      "path": "../shared"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { ipcMain, IpcMainInvokeEvent } from "electron";
-import { Constructor } from "@loopback/context";
+import type { Constructor } from "@loopback/context";
 import log from "electron-log";
 import "reflect-metadata";
 
@@ -56,7 +56,7 @@ export function controller<T extends Constructor<object>>(Base: T) {
 export function handle(channel: string) {
   return function (
     target: object,
-    propertyKey: string,
+    _propertyKey: string,
     propertyDescriptor: PropertyDescriptor
   ) {
     const handlers =

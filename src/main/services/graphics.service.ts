@@ -1,4 +1,3 @@
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
 import fs from "fs";
 import { ConfigService } from "@/main/services/config.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
@@ -8,6 +7,7 @@ import { ProfileService } from "@/main/services/profile.service";
 import path from "path";
 import { copy, existsSync } from "fs-extra";
 import { Logger, LoggerBinding } from "@/main/logger";
+import type { FriendlyDirectoryMap } from "@/types/modpack-metadata";
 
 export class GraphicsService {
   constructor(
@@ -40,7 +40,12 @@ export class GraphicsService {
   }
 
   async getDefaultPreference() {
-    return (await this.getGraphics())[0].real;
+    return (
+      (await this.getGraphics())[0]?.real ??
+      (() => {
+        throw new Error("No graphics found");
+      })()
+    );
   }
 
   async syncGraphicsFromGameToPresets(graphicsPreset: string, profile: string) {

@@ -11,7 +11,7 @@ import ViewCommunity from "@/renderer/views/ViewCommunity.vue";
 import ViewAdvanced from "@/renderer/views/ViewAdvanced.vue";
 import AutoUpdate from "@/renderer/views/AutoUpdate.vue";
 import ModDirectoryView from "@/renderer/views/ModDirectory.vue";
-import { ModpackService } from "@/renderer/services/modpack.service";
+import type { ModpackService } from "@/renderer/services/modpack.service";
 
 const HomeRouteName = "Home";
 const AutoUpdateRouteName = "AutoUpdate";
@@ -29,6 +29,8 @@ const checkModDirectory =
         name: ModDirectoryRouteName,
       };
     }
+
+    return undefined;
   };
 
 const getRoutes = (modpackService: ModpackService): RouteRecordRaw[] =>
@@ -75,6 +77,7 @@ const getRoutes = (modpackService: ModpackService): RouteRecordRaw[] =>
           // If the page is refreshed on the mod directory selection, just redirect to the home page
           return { name: HomeRouteName };
         }
+        return undefined;
       },
     },
   ]

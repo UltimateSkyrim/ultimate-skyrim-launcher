@@ -1,9 +1,9 @@
 import fs from "fs";
 import { MO2Names } from "@/main/services/modOrganizer.service";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import modpack from "@/modpack.json";
-import { IsModpackValidResponse } from "@/main/controllers/modpack/mopack.events";
-import { Modpack } from "@/modpack-metadata";
+import modpack from "@/main/wildlander/modpack.json";
+import type { IsModpackValidResponse } from "@/main/controllers/modpack/mopack.events";
+import type { Modpack } from "@/modpack-metadata";
 import { service } from "@loopback/core";
 import { ConfigService } from "@/main/services/config.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";

@@ -102,7 +102,7 @@ export class WindowService {
       if (isDevelopment) {
         const url = new URL(`http://localhost:8080/#${path}`).toString();
         await this.navigateInWindow(url);
-        if (!process.env.IS_TEST) {
+        if (!process.env["IS_TEST"]) {
           this.window.webContents.openDevTools();
         }
         // Show window without setting focus

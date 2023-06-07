@@ -1,44 +1,27 @@
 {
+  "extends": "@tsconfig/node16-strictest/tsconfig.json",
   "compilerOptions": {
+    "outDir": "dist",
     "target": "ES2021",
     "module": "CommonJS",
-    "outDir": "dist",
-    "strict": true,
-    "jsx": "preserve",
     "importHelpers": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": false,
-    "noImplicitThis": true,
-    "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "mocha"
-    ],
-    "paths": {
-      "@/*": [
-        "src/*",
-        "src/types/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "baseUrl": "."
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+  "references": [
+    {
+      "path": "./src/renderer"
+    },
+    {
+      "path": "./src/main"
+    },
+    {
+      "path": "./src/shared"
+    }
   ],
   "exclude": [
     "node_modules"

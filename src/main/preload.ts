@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
   },
   on: (channel: string, callback: (...args: unknown[]) => unknown) => {
     // Deliberately strip event as it includes `sender`
-    ipcRenderer.on(channel, (event, ...args) => callback(...args));
+    ipcRenderer.on(channel, (_event, ...args) => callback(...args));
   },
 });
 

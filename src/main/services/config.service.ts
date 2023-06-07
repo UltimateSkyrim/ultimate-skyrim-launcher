@@ -1,6 +1,6 @@
 import Store from "electron-store";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import { Resolution } from "@/Resolution";
+import type { Resolution } from "@/Resolution";
 import path from "path";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { Logger, LoggerBinding } from "@/main/logger";

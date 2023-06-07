@@ -1,10 +1,10 @@
 import { StartupService } from "@/main/services/startup.service";
-import { Constructor } from "@loopback/context";
+import type { Constructor } from "@loopback/context";
 import { WindowService } from "@/main/services/window.service";
 import { LoggerBinding } from "@/main/logger";
 import { BootMixin } from "@loopback/boot";
 import { Application } from "@loopback/core";
-import { Controller } from "@/main/decorators/controller.decorator";
+import type { Controller } from "@/main/decorators/controller.decorator";
 import { ErrorService } from "@/main/services/error.service";
 import logger from "electron-log";
 

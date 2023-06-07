@@ -2,11 +2,11 @@ import fs from "fs";
 import { ConfigService } from "@/main/services/config.service";
 import { copy, existsSync } from "fs-extra";
 import { not as isNotJunk } from "junk";
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/modpack-metadata";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { service } from "@loopback/core";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import { AdditionalInstruction } from "@/additional-instructions";
+import type { AdditionalInstruction } from "@/additional-instructions";
 import { InstructionService } from "@/main/services/instruction.service";
 import { Logger, LoggerBinding } from "@/main/logger";
 
@@ -79,7 +79,12 @@ export class EnbService {
   }
 
   async getDefaultPreference() {
-    return (await this.getENBPresets())[0].real;
+    return (
+      (await this.getENBPresets())[0]?.real ??
+      (() => {
+        throw new Error("No ENB presets found");
+      })()
+    );
   }
 
   isValid(preset: string) {

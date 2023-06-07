@@ -1,10 +1,7 @@
-import { IIniObject } from "js-ini/lib/interfaces/ini-object";
+import type { IIniObject, IIniObjectSection } from "js-ini";
 
 export interface ModOrganizerIni extends IIniObject {
-  General: object;
-  customExecutables: {
-    size: number;
-    [key: string]: unknown;
-  };
-  Settings: object;
+  General: IIniObjectSection;
+  customExecutables: IIniObjectSection;
+  Settings: IIniObjectSection;
 }

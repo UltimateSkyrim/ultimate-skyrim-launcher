@@ -1,5 +1,5 @@
 import fs from "fs";
-import {
+import type {
   WabbajackInstallSettings,
   WabbajackModpackMetadata,
   WabbajackV2SettingsFile,
@@ -21,7 +21,6 @@ export class WabbajackService {
   private wabbajackV3InstalledModpacksPath = `${SystemService.getLocalAppData()}/Wabbajack/saved_settings`;
 
   constructor(
-    @service(SystemService) private systemService: SystemService,
     @service(ModpackService) private modpackService: ModpackService,
     @inject(LoggerBinding) private logger: Logger
   ) {}
@@ -62,10 +61,10 @@ export class WabbajackService {
       .reduce(
         (accumulator, current) => ({
           ...accumulator,
-          [modpackMeta[current].InstallationPath]: {
-            title: modpackMeta[current].ModList.Name,
-            installPath: modpackMeta[current].InstallationPath,
-            version: modpackMeta[current].ModList.Version,
+          [modpackMeta[current]!.InstallationPath]: {
+            title: modpackMeta[current]!.ModList.Name,
+            installPath: modpackMeta[current]!.InstallationPath,
+            version: modpackMeta[current]!.ModList.Version,
           },
         }),
         {}
@@ -106,9 +105,9 @@ export class WabbajackService {
         return {
           ...accumulator,
           [current.contents.InstallLocation]: {
-            title: current.contents.Metadata?.title,
+            title: current.contents.Metadata?.title ?? null,
             installPath: current.contents.InstallLocation,
-            version: current.contents.Metadata?.version,
+            version: current.contents.Metadata?.version ?? null,
             lastUpdated: current.lastUpdated,
           },
         };
@@ -124,7 +123,7 @@ export class WabbajackService {
       modpacks !== null
         ? Object.keys(modpacks).filter(
             (modpack) =>
-              modpack !== "$type" && modpacks[modpack].title === modpackName
+              modpack !== "$type" && modpacks[modpack]?.title === modpackName
           )
         : [];
     this.logger.info(

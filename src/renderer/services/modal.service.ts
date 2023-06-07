@@ -1,5 +1,5 @@
-import { EventService } from "@/renderer/services/service-container";
-import { VueFinalModalProperty } from "vue-final-modal";
+import type { EventService } from "@/renderer/services/service-container";
+import type { VueFinalModalProperty } from "vue-final-modal";
 
 export const modalOpenedEvent = "modalOpened";
 
@@ -26,7 +26,7 @@ export class ModalService {
     vfm.hide(name);
     this.modalQueue = this.modalQueue.filter((modal) => modal !== name);
     this.eventService.emit(modalOpenedEvent, false);
-    if (this.modalQueue.length > 0) {
+    if (this.modalQueue[0]) {
       // There are still modals waiting to be opened, open the next one
       vfm.show(this.modalQueue[0]);
       this.eventService.emit(modalOpenedEvent, true);

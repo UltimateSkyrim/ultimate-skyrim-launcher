@@ -2,15 +2,14 @@ import * as os from "os";
 import { promisify } from "util";
 import childProcess from "child_process";
 import { ConfigService, isDevelopment } from "@/main/services/config.service";
-import { parse, stringify } from "js-ini";
+import { IIniObjectSection, parse, stringify } from "js-ini";
 import fs from "fs";
-import { IIniObjectSection } from "js-ini/src/interfaces/ini-object-section";
 import { screen } from "electron";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import { Resolution } from "@/Resolution";
+import type { Resolution } from "@/Resolution";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";
-import { name as modpackName } from "@/modpack.json";
+import { name as modpackName } from "@/main/wildlander/modpack.json";
 import { InstructionService } from "@/main/services/instruction.service";
 import { Logger, LoggerBinding } from "@/main/logger";
 
@@ -158,7 +157,7 @@ export class ResolutionService {
         // Remove empty entries
         .filter((resolution) => resolution !== "")
         // Only save the resolution
-        .map((resolution) => resolution.split(",")[0])
+        .map((resolution) => resolution.split(",")[0] as string)
     );
   }
 
@@ -295,13 +294,15 @@ export class ResolutionService {
       { comment: "#" }
     ) as IIniObjectSection;
 
-    (
-      SkyrimGraphicSettings.Render as IIniObjectSection
-    ).Resolution = `${width}x${height}`;
+    (SkyrimGraphicSettings["Render"] as IIniObjectSection)[
+      "Resolution"
+    ] = `${width}x${height}`;
 
     // If the selected resolution is ultra-widescreen, don't upscale the image otherwise it gets stretched
-    (SkyrimGraphicSettings.Render as IIniObjectSection).BorderlessUpscale =
-      this.shouldEnableBorderlessUpscale({ width, height });
+    // If the selected resolution is ultra-widescreen, don't upscale the image otherwise it gets stretched
+    (SkyrimGraphicSettings["Render"] as IIniObjectSection)[
+      "BorderlessUpscale"
+    ] = this.shouldEnableBorderlessUpscale({ width, height });
 
     await fs.promises.writeFile(
       this.skyrimGraphicsSettingsPath(),

@@ -1,13 +1,5 @@
 // An async version of array filter
-// Taken from: https://stackoverflow.com/a/46842181/3379536
-export async function asyncFilter<T>(
-  arr: T[],
-  callback: (item: T) => Promise<boolean>
-) {
-  const fail = Symbol();
-  return (
-    await Promise.all(
-      arr.map(async (item) => ((await callback(item)) ? item : fail))
-    )
-  ).filter((i) => i !== fail);
+export async function asyncFilter<T>(arr: T[], predicate: (value: T) => Promise<boolean>): Promise<T[]> {
+  const filtered = await Promise.all(arr.map(predicate));
+  return arr.filter((_, index) => filtered[index]);
 }

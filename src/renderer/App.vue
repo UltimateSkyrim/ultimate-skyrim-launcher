@@ -17,10 +17,14 @@ import {
   injectStrict,
   SERVICE_BINDINGS,
 } from "@/renderer/services/service-container";
-import { Modpack } from "@/modpack-metadata";
+import type { Modpack } from "@/modpack-metadata";
 import TheTitleBar from "@/renderer/components/TheTitleBar.vue";
 import { MODPACK_EVENTS } from "@/main/controllers/modpack/mopack.events";
 import AppPage from "@/renderer/components/AppPage.vue";
+
+const test = (something) => {
+  return something;
+}
 
 @Options({
   components: {

@@ -1,6 +1,5 @@
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { service } from "@loopback/core";
-import { ModOrganizerService } from "@/main/services/modOrganizer.service";
 import { ProfileService } from "@/main/services/profile.service";
 import { EnbService } from "@/main/services/enb.service";
 import { ConfigService } from "@/main/services/config.service";
@@ -24,8 +23,6 @@ export class LauncherService {
     @service(ResolutionService) private resolutionService: ResolutionService,
     @service(ModpackService) private modpackService: ModpackService,
     @service(ProfileService) private profileService: ProfileService,
-    @service(ModOrganizerService)
-    private modOrganizerService: ModOrganizerService,
     @service(ErrorService) private errorService: ErrorService,
     @service(WindowService) private windowService: WindowService,
     @service(GraphicsService) private graphicsService: GraphicsService,

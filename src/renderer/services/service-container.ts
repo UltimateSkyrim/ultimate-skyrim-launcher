@@ -1,13 +1,13 @@
 import { App, inject, InjectionKey } from "vue";
 import { PatreonService } from "./patreon.service";
 import { PostsService } from "@/renderer/services/posts.service";
-import { Emitter, EventType } from "mitt";
 import { ModalService } from "@/renderer/services/modal.service";
 import { MessageService } from "@/renderer/services/message.service";
 import { EventService } from "@/renderer/services/event.service";
 import { IpcService } from "@/renderer/services/ipc.service";
 import { ModpackService } from "@/renderer/services/modpack.service";
 import { CacheService } from "@/renderer/services/cache.service";
+import type { Emitter, EventType } from "mitt";
 
 export type EventService = Emitter<Record<EventType, unknown>>;
 

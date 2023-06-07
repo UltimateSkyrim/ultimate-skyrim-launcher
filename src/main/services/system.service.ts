@@ -20,8 +20,6 @@ import { Logger, LoggerBinding } from "@/main/logger";
   scope: BindingScope.SINGLETON,
 })
 export class SystemService {
-  private prerequisitesDownloaded = false;
-
   constructor(
     @service(ConfigService) private configService: ConfigService,
     @service(ErrorService) private errorService: ErrorService,
@@ -30,7 +28,7 @@ export class SystemService {
   ) {}
 
   static getLocalAppData() {
-    return path.resolve(`${process.env.APPDATA}/../local`);
+    return path.resolve(`${process.env["APPDATA"]}/../local`);
   }
 
   private static getInstallerFile() {
@@ -138,8 +136,6 @@ export class SystemService {
       "https://aka.ms/vs/17/release/vc_redist.x64.exe",
       SystemService.getInstallerFile()
     );
-
-    this.prerequisitesDownloaded = true;
   }
 
   async downloadFile(url: string, output: string) {

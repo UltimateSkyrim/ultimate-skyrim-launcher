@@ -1,5 +1,5 @@
-import { CacheService } from "@/renderer/services/cache.service";
 import { logger } from "@/main/logger";
+import type { CacheService } from "@/renderer/services/cache.service";
 
 export class PostsService {
   private posts: Post[] | undefined;

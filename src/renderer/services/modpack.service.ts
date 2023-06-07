@@ -1,8 +1,8 @@
-import { IpcService } from "@/renderer/services/ipc.service";
 import {
   IsModpackValidResponse,
   MODPACK_EVENTS,
 } from "@/main/controllers/modpack/mopack.events";
+import type { IpcService } from "@/renderer/services/ipc.service";
 
 export class ModpackService {
   constructor(private ipcService: IpcService) {}
