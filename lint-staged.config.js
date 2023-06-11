@@ -1,4 +1,4 @@
 module.exports = {
-  "*.{js,jsx,vue,ts,tsx}": ["vue-cli-service lint", () => "npm run test"],
+  "*.{ts,tsx,js,jsx,vue,json,scss,css}": ["npm run lint", () => "npm run test"],
   "*.scss": ["npm run lint:styles"],
 };

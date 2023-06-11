@@ -1,20 +1,17 @@
-{
+module.exports = {
   "env": {
     "node": false,
-    "browser": true,
+    "browser": false,
     "es6": true
   },
   "extends": [
     "eslint:recommended",
-    "plugin:vue/vue3-essential",
     "@vue/typescript/recommended",
-    "@vue/prettier",
-    "@vue/prettier/@typescript-eslint"
+    "plugin:vue/vue3-recommended",
+    "prettier"
   ],
+  "parser": "vue-eslint-parser",
   "parserOptions": {
     "parser": "@typescript-eslint/parser",
-    "project": [
-      "./tsconfig.json"
-    ]
-  }
+  },
 }

@@ -1,9 +1,9 @@
 import fs from "fs";
-import { MO2Names } from "@/main/services/modOrganizer.service";
+import { MO2_NAMES } from "@/main/services/modOrganizer.service";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import modpack from "@/main/wildlander/modpack.json";
+import modpack from "@/shared/wildlander/modpack.json";
 import type { IsModpackValidResponse } from "@/main/controllers/modpack/mopack.events";
-import type { Modpack } from "@/modpack-metadata";
+import type { Modpack } from "@/shared/types/modpack-metadata";
 import { service } from "@loopback/core";
 import { ConfigService } from "@/main/services/config.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
@@ -19,7 +19,7 @@ export class ModpackService {
   ) {}
 
   checkModpackPathIsValid(modpackPath: string): IsModpackValidResponse {
-    const missingPaths = [MO2Names.MO2EXE, "profiles", "launcher"]
+    const missingPaths = [MO2_NAMES.MO2EXE, "profiles", "launcher"]
       .filter((path) => !fs.existsSync(`${modpackPath}/${path}`))
       .map((path) => {
         this.logger.warn(

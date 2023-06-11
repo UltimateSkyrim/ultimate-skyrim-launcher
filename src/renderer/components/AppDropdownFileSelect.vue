@@ -1,11 +1,11 @@
 <template>
   <BaseDropdown
-    :current-selection="currentSelection ?? this.options[0]"
+    v-if="options"
+    :current-selection="currentSelection ?? options[0]"
     :options="options"
     grow="true"
-    v-if="options"
-    @selected="optionSelected"
     :small="true"
+    @selected="optionSelected"
   />
 </template>
 
@@ -17,7 +17,7 @@ import BaseDropdown, {
 import { Prop } from "vue-property-decorator";
 import BaseLabel from "@/renderer/components/BaseLabel.vue";
 import { DIALOG_EVENTS } from "@/main/controllers/dialog/dialog.events";
-import { OpenDialogReturnValue } from "electron";
+import type { OpenDialogReturnValue } from "electron";
 import {
   injectStrict,
   SERVICE_BINDINGS,
@@ -33,11 +33,11 @@ export default class AppDropdownFileSelect extends Vue {
   @Prop({ required: true }) private options!: SelectOption[];
   @Prop({ required: true }) private defaultText!: string;
   @Prop() private currentSelection!: SelectOption | null;
-  @Prop() private label!: string;
+  @Prop() label!: string;
 
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  created() {
+  override created() {
     this.options.push({
       text:
         this.options.length === 0

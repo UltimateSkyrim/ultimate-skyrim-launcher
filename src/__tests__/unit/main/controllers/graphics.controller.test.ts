@@ -20,18 +20,18 @@ describe("Graphics controller", () => {
     sinon.assert.called(graphicsService.stubs.getGraphicsPreference);
   });
 
-  it("should get the graphics settings", () => {
-    graphicsController.getGraphics();
+  it("should get the graphics settings", async () => {
+    await graphicsController.getGraphics();
     sinon.assert.called(graphicsService.stubs.getGraphics);
   });
 
-  it("should set the graphics preference", () => {
-    graphicsController.setGraphics("mock graphics");
+  it("should set the graphics preference", async () => {
+    await graphicsController.setGraphics("mock graphics");
     sinon.assert.calledWith(graphicsService.stubs.setGraphics, "mock graphics");
   });
 
-  it("should restore the graphics preference", () => {
-    graphicsController.restoreGraphics();
+  it("should restore the graphics preference", async () => {
+    await graphicsController.restoreGraphics();
     sinon.assert.called(graphicsService.stubs.restoreGraphics);
   });
 });

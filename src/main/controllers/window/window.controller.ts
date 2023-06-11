@@ -1,33 +1,24 @@
 import { controller, handle } from "@/main/decorators/controller.decorator";
 import { WindowService } from "@/main/services/window.service";
 import { service } from "@loopback/core";
-import { WindowEvents } from "@/main/controllers/window/window.events";
-import { ConfigService } from "@/main/services/config.service";
+import { WINDOW_EVENTS } from "@/main/controllers/window/window.events";
 
 @controller
 export class WindowController {
-  constructor(
-    @service(WindowService) private renderService: WindowService,
-    @service(ConfigService) private configService: ConfigService
-  ) {}
+  constructor(@service(WindowService) private renderService: WindowService) {}
 
-  @handle(WindowEvents.CLOSE)
+  @handle(WINDOW_EVENTS.CLOSE)
   quit() {
     this.renderService.quit();
   }
 
-  @handle(WindowEvents.RELOAD)
+  @handle(WINDOW_EVENTS.RELOAD)
   reload() {
     this.renderService.reload();
   }
 
-  @handle(WindowEvents.MINIMIZE)
+  @handle(WINDOW_EVENTS.MINIMIZE)
   minimize() {
     this.renderService.minimize();
-  }
-
-  @handle(WindowEvents.OPEN_LOG_PATH)
-  async openLogPath() {
-    await this.configService;
   }
 }

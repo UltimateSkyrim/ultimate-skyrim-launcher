@@ -17,14 +17,10 @@ import {
   injectStrict,
   SERVICE_BINDINGS,
 } from "@/renderer/services/service-container";
-import type { Modpack } from "@/modpack-metadata";
+import type { Modpack } from "@/shared/wildlander/modpack-metadata";
 import TheTitleBar from "@/renderer/components/TheTitleBar.vue";
 import { MODPACK_EVENTS } from "@/main/controllers/modpack/mopack.events";
 import AppPage from "@/renderer/components/AppPage.vue";
-
-const test = (something) => {
-  return something;
-}
 
 @Options({
   components: {
@@ -34,11 +30,11 @@ const test = (something) => {
 })
 export default class App extends Vue {
   private modpack!: Modpack | undefined;
-  private backgroundImage = "";
+  backgroundImage = "";
 
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  async created() {
+  override async created() {
     this.modpack = await this.ipcService.invoke(
       MODPACK_EVENTS.GET_MODPACK_METADATA
     );

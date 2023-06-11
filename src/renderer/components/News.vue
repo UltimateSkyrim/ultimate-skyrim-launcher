@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Options as Component, Vue } from "vue-class-component";
 import BaseList from "./BaseList.vue";
-import { Post, PostsService } from "@/renderer/services/posts.service";
+import type { Post, PostsService } from "@/renderer/services/posts.service";
 import {
   injectStrict,
   SERVICE_BINDINGS,
@@ -43,7 +43,7 @@ export default class News extends Vue {
   news: Post[] = [];
   failedToGetNews = false;
 
-  async created() {
+  override async created() {
     this.newsService = injectStrict(SERVICE_BINDINGS.NEWS_SERVICE);
     try {
       this.news = await this.newsService.getPosts(this.updateNews);

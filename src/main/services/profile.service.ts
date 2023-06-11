@@ -1,6 +1,6 @@
 import { ConfigService } from "@/main/services/config.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import type { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import fs from "fs";
 import { not as isNotJunk } from "junk";
 import { copy, existsSync } from "fs-extra";

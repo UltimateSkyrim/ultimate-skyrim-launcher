@@ -91,7 +91,7 @@ export class UpdateService {
       autoUpdater.quitAndInstall();
     });
 
-    autoUpdater.on(UPDATE_EVENTS.ERROR, async (error: Error) => {
+    autoUpdater.on(UPDATE_EVENTS.ERROR, (error: Error) => {
       let message;
       if (error.message.includes("net::ERR_NAME_NOT_RESOLVED")) {
         message = `This likely means you are not connected to the internet. It is recommended you use the latest launcher version as it might contain bug fixes for the modpack itself.`;
@@ -99,7 +99,7 @@ export class UpdateService {
         message = `An unknown error has occurred. Please try relaunching the launcher.`;
       }
 
-      await this.errorService.handleError(
+      this.errorService.handleError(
         "Error checking for update",
         `Cannot check for update. ${message}`
       );

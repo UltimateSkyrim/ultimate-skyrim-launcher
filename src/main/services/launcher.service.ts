@@ -37,7 +37,7 @@ export class LauncherService {
 
   async setModpack(filepath: string) {
     try {
-      await this.configService.setPreference(
+      this.configService.setPreference(
         USER_PREFERENCE_KEYS.MOD_DIRECTORY,
         filepath
       );
@@ -54,7 +54,7 @@ export class LauncherService {
       );
     } catch (error) {
       if (error instanceof Error && error.message.includes("EPERM")) {
-        await this.errorService.handleError(
+        this.errorService.handleError(
           "Permission error",
           `
           The launcher has been unable to create/modify some files due to a permissions error.
@@ -63,7 +63,7 @@ export class LauncherService {
         );
         this.windowService.quit();
       } else {
-        await this.errorService.handleUnknownError(error);
+        this.errorService.handleUnknownError(error);
       }
     }
   }

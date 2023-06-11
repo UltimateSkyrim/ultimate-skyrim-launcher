@@ -13,7 +13,7 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import { WindowEvents } from "@/main/controllers/window/window.events";
+import { WINDOW_EVENTS } from "@/main/controllers/window/window.events";
 import {
   injectStrict,
   SERVICE_BINDINGS,
@@ -22,14 +22,14 @@ import {
 export default class TheTitleBar extends Vue {
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  @Prop({ default: false }) private grow!: boolean;
+  @Prop({ default: false }) grow!: boolean;
 
   async close() {
-    await this.ipcService.invoke(WindowEvents.CLOSE);
+    await this.ipcService.invoke(WINDOW_EVENTS.CLOSE);
   }
 
   async minimize() {
-    await this.ipcService.invoke(WindowEvents.MINIMIZE);
+    await this.ipcService.invoke(WINDOW_EVENTS.MINIMIZE);
   }
 }
 </script>

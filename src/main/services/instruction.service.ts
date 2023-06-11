@@ -1,8 +1,8 @@
 import type {
   AdditionalInstructions,
   PluginOrModInstruction,
-} from "@/additional-instructions";
-import modpackAdditionalInstructions from "@/main/wildlander/additional-instructions.json";
+} from "@/shared/types/additional-instructions";
+import modpackAdditionalInstructions from "@/shared/wildlander/additional-instructions.json";
 import fs from "fs";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";

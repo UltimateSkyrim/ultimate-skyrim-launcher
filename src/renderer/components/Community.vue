@@ -43,8 +43,8 @@ import AppPageContent from "@/renderer/components/AppPageContent.vue";
 import AppPage from "@/renderer/components/AppPage.vue";
 import BaseLink from "@/renderer/components/BaseLink.vue";
 import ImageWithText from "@/renderer/components/ImageWithText.vue";
-import { Modpack } from "@/modpack-metadata";
-import modpack from "@/main/wildlander/modpack.json";
+import type { Modpack } from "@/shared/types/modpack-metadata";
+import modpack from "@/shared/wildlander/modpack.json";
 
 @Options({
   components: {
@@ -55,9 +55,9 @@ import modpack from "@/main/wildlander/modpack.json";
   },
 })
 export default class Community extends Vue {
-  private modpack!: Modpack;
+  modpack!: Modpack;
 
-  async created() {
+  override async created() {
     this.modpack = modpack;
   }
 }

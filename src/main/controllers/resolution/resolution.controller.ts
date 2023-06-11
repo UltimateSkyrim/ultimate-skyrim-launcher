@@ -2,7 +2,7 @@ import { controller, handle } from "@/main/decorators/controller.decorator";
 import { RESOLUTION_EVENTS } from "@/main/controllers/resolution/resolution.events";
 import { ResolutionService } from "@/main/services/resolution.service";
 import { service } from "@loopback/core";
-import type { Resolution } from "@/Resolution";
+import type { Resolution } from "@/shared/types/Resolution";
 
 @controller
 export class ResolutionController {

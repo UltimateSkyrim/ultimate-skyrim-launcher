@@ -95,12 +95,12 @@ export class WindowService {
 
   /**
    *
-   * @param path - Must start with a '/'
+   * @param urlPath - Must start with a '/'
    */
-  async load(path: string) {
+  async load(urlPath: string) {
     try {
       if (isDevelopment) {
-        const url = new URL(`http://localhost:8080/#${path}`).toString();
+        const url = new URL(`http://localhost:8080/#${urlPath}`).toString();
         await this.navigateInWindow(url);
         if (!process.env["IS_TEST"]) {
           this.window.webContents.openDevTools();
@@ -110,7 +110,7 @@ export class WindowService {
       } else {
         this.createProtocol("app");
         // Load the index.html when not in development
-        const url = new URL(`app://./index.html/#${path}`).toString();
+        const url = new URL(`app://./index.html/#${urlPath}`).toString();
         await this.navigateInWindow(url);
         this.window.show();
       }

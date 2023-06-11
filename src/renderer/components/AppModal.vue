@@ -1,7 +1,7 @@
 <template>
   <vue-final-modal
-    :name="name"
     v-model="model"
+    :name="name"
     classes="l-flex l-center"
     content-class="c-modal l-flex"
     overlay-class="c-modal__overlay"
@@ -15,15 +15,15 @@
       <slot />
 
       <div
-        class="c-modal__actions c-modal__actions--right"
         v-if="includeCloseButton"
+        class="c-modal__actions c-modal__actions--right"
       >
-        <BaseButton @click="toggleModal(false)" v-if="includeCloseButton"
+        <BaseButton v-if="includeCloseButton" @click="toggleModal(false)"
           >Close
         </BaseButton>
       </div>
 
-      <div class="c-modal__actions u-spacing" v-if="$slots.action">
+      <div v-if="$slots.action" class="c-modal__actions u-spacing">
         <slot name="action"></slot>
       </div>
     </div>
@@ -37,7 +37,7 @@ import {
   injectStrict,
   SERVICE_BINDINGS,
 } from "@/renderer/services/service-container";
-import { ModalService } from "@/renderer/services/modal.service";
+import type { ModalService } from "@/renderer/services/modal.service";
 import BaseButton from "@/renderer/components/BaseButton.vue";
 
 @Options({
@@ -49,15 +49,15 @@ export default class AppModal extends Vue {
   @Prop({ required: true }) name!: string;
   @Prop({ default: true }) showModal!: boolean;
   @Prop() includeCloseButton = false;
-  private model = false;
+  model = false;
 
   modalService!: ModalService;
 
-  created() {
+  override created() {
     this.modalService = injectStrict(SERVICE_BINDINGS.MODAL_SERVICE);
   }
 
-  mounted() {
+  override mounted() {
     this.toggleModal(this.showModal);
   }
 

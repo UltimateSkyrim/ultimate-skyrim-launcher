@@ -9,7 +9,7 @@ import { Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
 export default class NavigationItem extends Vue {
-  @Prop() private active!: boolean;
+  @Prop() active!: boolean;
 }
 </script>
 

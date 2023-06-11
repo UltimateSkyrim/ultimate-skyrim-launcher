@@ -65,11 +65,11 @@ describe("Startup service", () => {
     sinon.assert.called(mockWindowService.stubs.quit);
   });
 
-  it("should not quit if there are no blacklisted processes", () => {
+  it("should not quit if there are no blacklisted processes", async () => {
     startupService.registerStartupCommands(
       'Check if blacklisted process is running"'
     );
-    startupService.runStartup();
+    await startupService.runStartup();
 
     sinon.assert.notCalled(mockWindowService.stubs.quit);
   });

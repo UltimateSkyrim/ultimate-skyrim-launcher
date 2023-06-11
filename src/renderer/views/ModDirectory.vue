@@ -1,5 +1,5 @@
 <template>
-  <AppModal name="modDirectory" v-if="this.modpackMetadata">
+  <AppModal v-if="modpackMetadata" name="modDirectory">
     <BaseImage
       :image-source="modpackMetadata.logo"
       :alt="modpackMetadata.name"
@@ -29,7 +29,7 @@ import {
   injectStrict,
   SERVICE_BINDINGS,
 } from "@/renderer/services/service-container";
-import { Modpack } from "@/modpack-metadata";
+import type { Modpack } from "@/shared/types/modpack-metadata";
 import { MODPACK_EVENTS } from "@/main/controllers/modpack/mopack.events";
 import ModDirectory from "@/renderer/components/ModDirectory.vue";
 
@@ -37,11 +37,11 @@ import ModDirectory from "@/renderer/components/ModDirectory.vue";
   components: { BaseLink, BaseImage, AppModal, ModDirectory },
 })
 export default class ModDirectoryView extends Vue {
-  private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
+  ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  private modpackMetadata: Modpack | null = null;
+  modpackMetadata: Modpack | null = null;
 
-  async created() {
+  override async created() {
     this.modpackMetadata = await this.ipcService.invoke(
       MODPACK_EVENTS.GET_MODPACK_METADATA
     );

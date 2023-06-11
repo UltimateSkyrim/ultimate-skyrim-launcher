@@ -10,7 +10,7 @@ export class DialogController {
 
   @handle(DIALOG_EVENTS.ERROR)
   async error({ title, error }: { title: string; error: string }) {
-    await this.errorService.handleError(title, error);
+    this.errorService.handleError(title, error);
   }
 
   @handle(DIALOG_EVENTS.CONFIRMATION)
@@ -21,7 +21,7 @@ export class DialogController {
     message: string;
     buttons: string[];
   }) {
-    return await dialog.showMessageBox({ message, buttons });
+    return dialog.showMessageBox({ message, buttons });
   }
 
   @handle(DIALOG_EVENTS.DIRECTORY_SELECT)

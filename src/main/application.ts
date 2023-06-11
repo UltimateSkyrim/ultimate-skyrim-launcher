@@ -29,7 +29,7 @@ export class LauncherApplication extends BootMixin(Application) {
         await this.startBrowser();
       } catch (error) {
         const errorService = await this.getServiceByClass(ErrorService);
-        await errorService.handleError(
+        errorService.handleError(
           "Failed to start application",
           (error as Error).message
         );
@@ -40,6 +40,10 @@ export class LauncherApplication extends BootMixin(Application) {
 
   public getServiceByClass<T>(cls: Constructor<T>): Promise<T> {
     return this.get(`${serviceNamespace}.${cls.name}`);
+  }
+
+  public getServiceByClassSync<T>(cls: Constructor<T>): T {
+    return this.getSync(`${serviceNamespace}.${cls.name}`);
   }
 
   private async registerHandlers() {

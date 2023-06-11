@@ -1,9 +1,9 @@
 <template>
   <BaseDropdown
+    v-if="resolutions !== null && selectedResolution !== null"
     :options="resolutions"
     :current-selection="selectedResolution"
     :show-tooltip-on-hover="true"
-    v-if="resolutions !== null && selectedResolution !== null"
     :grow="true"
     @selected="onResolutionSelected"
   >
@@ -35,16 +35,16 @@ import { Options, Vue } from "vue-class-component";
 import BaseDropdown, {
   SelectOption,
 } from "@/renderer/components/BaseDropdown.vue";
-import { Resolution as ResolutionType } from "@/Resolution";
+import type { Resolution as ResolutionType } from "@/shared/types/Resolution";
 import BaseLink from "@/renderer/components/BaseLink.vue";
 import BaseInput from "@/renderer/components/BaseInput.vue";
-import { RESOLUTION_EVENTS } from "@/main/controllers/resolution/resolution.events";
 import { logger } from "@/main/logger";
 import {
   injectStrict,
   SERVICE_BINDINGS,
 } from "@/renderer/services/service-container";
 import { asyncFilter } from "@/shared/util/asyncFilter";
+import { RESOLUTION_EVENTS } from "@/main/controllers/resolution/resolution.events";
 
 @Options({
   components: { BaseLink, BaseDropdown, BaseInput },
@@ -56,7 +56,7 @@ export default class Resolution extends Vue {
 
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  async created() {
+  override async created() {
     const resolutions = await this.getResolutions();
     this.containsUltrawide =
       (
@@ -72,37 +72,38 @@ export default class Resolution extends Vue {
       ).length > 0;
 
     this.resolutions = await this.resolutionsToSelectOptions(resolutions);
-    [this.selectedResolution] = await this.resolutionsToSelectOptions([
+    this.selectedResolution = (await this.resolutionsToSelectOptions([
       await this.getResolutionPreference(),
-    ]);
+    ]))[0] || null;
+  }
+
+  private async resolutionsToSelectOptions(
+    resolutions: ResolutionType[]
+  ): Promise<SelectOption[]> {
+    return Promise.all(
+      resolutions.map(async ({ height, width }) => ({
+        text: `${width} x ${height}`,
+        value: { width, height },
+        disabled:
+          (await this.ipcService.invoke(
+            RESOLUTION_EVENTS.IS_UNSUPPORTED_RESOLUTION,
+            {
+              width,
+              height,
+            }
+          )) ?? false,
+      }))
+    );
   }
 
   async getResolutionPreference(): Promise<ResolutionType> {
-    return await this.ipcService.invoke<ResolutionType>(
+    return this.ipcService.invoke<ResolutionType>(
       RESOLUTION_EVENTS.GET_RESOLUTION_PREFERENCE
     );
   }
 
   async getResolutions(): Promise<ResolutionType[]> {
     return this.ipcService.invoke(RESOLUTION_EVENTS.GET_RESOLUTIONS);
-  }
-
-  private async resolutionsToSelectOptions(
-    resolutions: ResolutionType[]
-  ): Promise<SelectOption[]> {
-    return await Promise.all(
-      resolutions.map(async ({ height, width }) => ({
-        text: `${width} x ${height}`,
-        value: { width, height },
-        disabled: await this.ipcService.invoke(
-          RESOLUTION_EVENTS.IS_UNSUPPORTED_RESOLUTION,
-          {
-            width,
-            height,
-          }
-        ),
-      }))
-    );
   }
 
   async onResolutionSelected(option: SelectOption) {

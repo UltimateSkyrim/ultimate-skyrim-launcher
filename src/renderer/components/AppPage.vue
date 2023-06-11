@@ -48,19 +48,19 @@ import MO2Modal from "@/renderer/components/MO2RunningModal.vue";
   },
 })
 export default class AppPage extends Vue {
-  @Prop({ default: "column" }) private layout!: "row" | "column";
+  @Prop({ default: "column" }) layout!: "row" | "column";
 
   clickEventsEnabled = true;
-  private preloadCheck = true;
+  preloadCheck = true;
 
   private eventService = injectStrict(SERVICE_BINDINGS.EVENT_SERVICE);
 
-  created() {
+  override created() {
     const route = useRoute();
     watch(
       () => route.name,
       () => {
-        this.preloadCheck = route.meta?.preload as boolean;
+        this.preloadCheck = route.meta?.["preload"] as boolean;
       }
     );
 

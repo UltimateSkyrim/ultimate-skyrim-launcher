@@ -58,7 +58,7 @@ export class StartupService {
       },
       {
         name: "Auto update",
-        execute: async () => await this.updateService.update(),
+        execute: async () => this.updateService.update(),
       },
       {
         id: "processBlacklist",
@@ -73,7 +73,7 @@ export class StartupService {
                 runningBlacklistedProcesses
               )}`
             );
-            await this.errorService.handleError(
+            this.errorService.handleError(
               "Incompatible program running",
               `
                Please note that ${runningBlacklistedProcesses[0].name} is incompatible with the modpack/launcher.

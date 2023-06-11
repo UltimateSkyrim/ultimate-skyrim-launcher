@@ -61,7 +61,7 @@ export class SystemService {
         this.logger.error(error);
       }
     } else {
-      await this.errorService.handleError(
+      this.errorService.handleError(
         "Error while opening crash logs folder",
         `Crash logs directory at ${logPath} does not exist. This likely means you do not have any crash logs.`
       );
@@ -75,13 +75,13 @@ export class SystemService {
     the renderer logs have to be manually cleared here.
     Because even if the entire logging object is exposed to the renderer it is unable to clear the file.
     */
-    const path = this.logger.transports?.file.getFile().path.split("\\") || [];
+    const loggerPath = this.logger.transports?.file.getFile().path.split("\\") || [];
     // replace main.log with renderer.log
-    path.pop();
-    path.push("renderer.log");
+    loggerPath.pop();
+    loggerPath.push("renderer.log");
 
     //clear renderer.log
-    const renderLog = path.join("\\");
+    const renderLog = loggerPath.join("\\");
     if (fs.existsSync(renderLog)) {
       await fs.promises.writeFile(renderLog, "", { flag: "w" });
     }

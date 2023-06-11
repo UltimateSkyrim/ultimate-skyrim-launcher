@@ -14,12 +14,17 @@ export class PatreonService {
 
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1)); // Generate a random index
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j]!, shuffledArray[i]!]; // Swap elements
+      [shuffledArray[i], shuffledArray[j]] = [
+        // Disable this eslint rule here because the arrays are intentionally being swapped
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        shuffledArray[j]!,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        shuffledArray[i]!,
+      ]; // Swap elements
     }
 
     return shuffledArray;
   }
-
 
   public async getPatrons(shuffle = true): Promise<Patron[]> {
     if (this.patrons.length === 0) {

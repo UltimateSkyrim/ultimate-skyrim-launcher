@@ -7,7 +7,7 @@ import { ProfileService } from "@/main/services/profile.service";
 import path from "path";
 import { copy, existsSync } from "fs-extra";
 import { Logger, LoggerBinding } from "@/main/logger";
-import type { FriendlyDirectoryMap } from "@/types/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 
 export class GraphicsService {
   constructor(

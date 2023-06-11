@@ -27,9 +27,9 @@ type HandlerMap = Map<string, (...args: unknown[]) => unknown>;
  }
  ```
  */
-export function controller<T extends Constructor<object>>(Base: T) {
+export function controller<T extends Constructor<object>>(baseClass: T) {
   return {
-    [Base.name]: class extends Base implements Controller {
+    [baseClass.name]: class extends baseClass implements Controller {
       public registerHandlers() {
         const handlers: HandlerMap = Reflect.getMetadata(
           HandlersMetadataKey,
@@ -45,7 +45,7 @@ export function controller<T extends Constructor<object>>(Base: T) {
         });
       }
     },
-  }[Base.name];
+  }[baseClass.name];
 }
 
 /**

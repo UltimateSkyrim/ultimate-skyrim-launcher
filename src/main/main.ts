@@ -1,10 +1,10 @@
 import { app, protocol } from "electron";
-import { isDevelopment } from "./main/services/config.service";
+import { isDevelopment } from "./services/config.service";
 import { autoUpdater } from "electron-updater";
-import { LauncherApplication } from "@/main/application";
-import { ErrorService } from "@/main/services/error.service";
-import { WindowService } from "@/main/services/window.service";
-import { newLogInstance } from "@/main/logger";
+import { LauncherApplication } from "./application";
+import { ErrorService } from "./services/error.service";
+import { WindowService } from "./services/window.service";
+import { newLogInstance } from "./logger";
 
 const isSingleInstance = app.requestSingleInstanceLock();
 if (!isSingleInstance) {
@@ -45,10 +45,9 @@ const start = async () => {
   await launcherApplication.boot();
   await launcherApplication.start();
 
-  app.on("second-instance", async () => {
-    const windowService = await launcherApplication.getServiceByClass(
-      WindowService
-    );
+  app.on("second-instance", () => {
+    const windowService =
+      launcherApplication.getServiceByClassSync(WindowService);
     // Someone tried to run a second instance, so focus the original window.
     windowService.focusWindow();
   });
@@ -57,17 +56,15 @@ const start = async () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", async () => {
-  try {
-    await start();
-  } catch (error) {
-    const errorService = new ErrorService(logger);
-    await errorService.handleError(
-      "Failed to start application",
-      (error as Error).message
-    );
-    process.exit(1);
-  }
-
-  logger.debug("App started");
+app.on("ready", () => {
+  start()
+    .then(() => logger.debug("App started"))
+    .catch((error) => {
+      const errorService = new ErrorService(logger);
+      errorService.handleError(
+        "Failed to start application",
+        (error as Error).message
+      );
+      process.exit(1);
+    });
 });

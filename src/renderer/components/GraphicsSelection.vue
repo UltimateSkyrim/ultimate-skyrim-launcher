@@ -1,10 +1,10 @@
 <template>
   <BaseDropdown
+    v-if="graphics !== null && selectedGraphics !== null"
     :current-selection="selectedGraphics"
     :options="graphics"
     :grow="true"
     :show-tooltip-on-hover="true"
-    v-if="graphics !== null && selectedGraphics !== null"
     @selected="onGraphicsSelected"
   >
     Uses CPU and GPU. Determines the draw distance and quality of objects,
@@ -17,7 +17,7 @@ import { Options, Vue } from "vue-class-component";
 import BaseDropdown, {
   SelectOption,
 } from "@/renderer/components/BaseDropdown.vue";
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import { logger } from "@/main/logger";
 import {
   injectStrict,
@@ -34,9 +34,10 @@ export default class GraphicsSelection extends Vue {
 
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  async created() {
+  override async created() {
     this.graphics = await this.getGraphics();
-    this.selectedGraphics = await this.getInitialGraphics(this.graphics);
+    this.selectedGraphics =
+      (await this.getInitialGraphics(this.graphics)) ?? null;
   }
 
   onGraphicsSelected(option: SelectOption) {

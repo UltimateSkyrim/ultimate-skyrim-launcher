@@ -12,7 +12,7 @@ module.exports = {
       nodeIntegration: false,
       externals: Object.keys(dependencies),
       bundleMainProcess: false,
-      mainProcessFile: "dist/main.js",
+      mainProcessFile: "dist/main/main.js",
       rendererProcessFile: "src/renderer/index.ts",
       outputDir: "dist",
       builderOptions: {

@@ -2,11 +2,11 @@ import fs from "fs";
 import { ConfigService } from "@/main/services/config.service";
 import { copy, existsSync } from "fs-extra";
 import { not as isNotJunk } from "junk";
-import type { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { service } from "@loopback/core";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import type { AdditionalInstruction } from "@/additional-instructions";
+import type { AdditionalInstruction } from "@/shared/types/additional-instructions";
 import { InstructionService } from "@/main/services/instruction.service";
 import { Logger, LoggerBinding } from "@/main/logger";
 

@@ -1,6 +1,5 @@
-export const enum WindowEvents {
+export const enum WINDOW_EVENTS {
   CLOSE = "CLOSE",
   RELOAD = "RELOAD",
   MINIMIZE = "MINIMIZE",
-  OPEN_LOG_PATH = "OPEN_LOG_PATH",
 }

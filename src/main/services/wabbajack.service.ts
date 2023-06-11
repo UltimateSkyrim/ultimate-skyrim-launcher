@@ -3,7 +3,7 @@ import type {
   WabbajackInstallSettings,
   WabbajackModpackMetadata,
   WabbajackV2SettingsFile,
-} from "@/wabbajack";
+} from "@/shared/types/wabbajack";
 import { SystemService } from "@/main/services/system.service";
 import { service } from "@loopback/core";
 import { BindingScope, inject, injectable } from "@loopback/context";
@@ -95,8 +95,7 @@ export class WabbajackService {
         // This means a later install might appear before a previous one,
         // we need to find the latest install and remove the others
         if (
-          currentInAccumulator &&
-          currentInAccumulator.lastUpdated &&
+          currentInAccumulator?.lastUpdated &&
           currentInAccumulator.lastUpdated > current.lastUpdated
         ) {
           return accumulator;
@@ -135,7 +134,7 @@ export class WabbajackService {
 
   async getModpackMetadata(path: string) {
     const modpacks = await this.getInstalledModpacks();
-    return modpacks && modpacks[path] ? modpacks[path] : null;
+    return modpacks?.[path] ? modpacks[path] : null;
   }
 
   async getCurrentModpackMetadata() {

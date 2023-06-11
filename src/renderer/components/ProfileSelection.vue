@@ -1,10 +1,10 @@
 <template>
   <BaseDropdown
+    v-if="profiles !== null && selectedProfile !== null"
     :current-selection="selectedProfile"
     :options="profiles"
     :grow="true"
     :show-tooltip-on-hover="true"
-    v-if="profiles !== null && selectedProfile !== null"
     @selected="onProfileSelected"
     @click="checkIfShowingHiddenProfiles"
   >
@@ -18,7 +18,7 @@ import { Options, Vue } from "vue-class-component";
 import BaseDropdown, {
   SelectOption,
 } from "@/renderer/components/BaseDropdown.vue";
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import { logger } from "@/main/logger";
 import {
   injectStrict,
@@ -39,9 +39,10 @@ export default class ProfileSelection extends Vue {
 
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  async created() {
+  override async created() {
     this.profiles = await this.getProfiles();
-    this.selectedProfile = await this.getInitialProfile(this.profiles);
+    this.selectedProfile =
+      (await this.getInitialProfile(this.profiles)) ?? null;
   }
 
   onProfileSelected(option: SelectOption) {

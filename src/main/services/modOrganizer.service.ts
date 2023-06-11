@@ -16,10 +16,10 @@ import { GameService } from "@/main/services/game.service";
 import { ProfileService } from "@/main/services/profile.service";
 import { SystemService } from "@/main/services/system.service";
 import { GraphicsService } from "@/main/services/graphics.service";
-import type { ModOrganizerIni } from "@/ModOrganizer.ini";
+import type { ModOrganizerIni } from "@/shared/types/ModOrganizer.ini";
 import { Logger, LoggerBinding } from "@/main/logger";
 
-export const enum MO2Names {
+export const enum MO2_NAMES {
   MO2EXE = "ModOrganizer.exe",
   MO2Settings = "ModOrganizer.ini",
 }
@@ -43,11 +43,11 @@ export class ModOrganizerService {
   ) {}
 
   private static filterMO2(process: psList.ProcessDescriptor) {
-    return process.name === MO2Names.MO2EXE;
+    return process.name === MO2_NAMES.MO2EXE;
   }
 
   async isRunning() {
-    return this.systemService.isProcessRunning(MO2Names.MO2EXE);
+    return this.systemService.isProcessRunning(MO2_NAMES.MO2EXE);
   }
 
   async closeMO2() {
@@ -84,7 +84,7 @@ export class ModOrganizerService {
   async readSettings() {
     return parse(
       await fs.promises.readFile(
-        `${this.configService.modDirectory()}/${MO2Names.MO2Settings}`,
+        `${this.configService.modDirectory()}/${MO2_NAMES.MO2Settings}`,
         "utf-8"
       )
     ) as ModOrganizerIni;
@@ -104,7 +104,7 @@ export class ModOrganizerService {
     ] = `@ByteArray(${profile})`;
 
     await fs.promises.writeFile(
-      `${this.configService.modDirectory()}/${MO2Names.MO2Settings}`,
+      `${this.configService.modDirectory()}/${MO2_NAMES.MO2Settings}`,
       stringify(settings)
     );
   }
@@ -120,7 +120,7 @@ export class ModOrganizerService {
     (settings.Settings as IIniObjectSection)["lock_gui"] = false;
 
     await fs.promises.writeFile(
-      `${this.configService.modDirectory()}/${MO2Names.MO2Settings}`,
+      `${this.configService.modDirectory()}/${MO2_NAMES.MO2Settings}`,
       stringify(settings)
     );
   }
@@ -130,7 +130,7 @@ export class ModOrganizerService {
     // If we have some previous settings saved, restore them
     if (this.previousMO2Settings) {
       await fs.promises.writeFile(
-        `${this.configService.modDirectory()}/${MO2Names.MO2Settings}`,
+        `${this.configService.modDirectory()}/${MO2_NAMES.MO2Settings}`,
         stringify(this.previousMO2Settings)
       );
       this.previousMO2Settings = null;
@@ -180,7 +180,7 @@ export class ModOrganizerService {
 
       const MO2Path = path.join(
         this.configService.getPreference(USER_PREFERENCE_KEYS.MOD_DIRECTORY),
-        MO2Names.MO2EXE
+        MO2_NAMES.MO2EXE
       );
       const { stderr } = await promisify(childProcess.exec)(`"${MO2Path}"`);
       if (stderr) {
@@ -207,7 +207,7 @@ export class ModOrganizerService {
 
       const MO2Path = path.join(
         this.configService.getPreference(USER_PREFERENCE_KEYS.MOD_DIRECTORY),
-        MO2Names.MO2EXE
+        MO2_NAMES.MO2EXE
       );
       const profile = this.configService.getPreference(
         USER_PREFERENCE_KEYS.PRESET
@@ -219,14 +219,14 @@ export class ModOrganizerService {
       const { stderr } = await promisify(childProcess.exec)(mo2Command);
       await this.postLaunch();
       if (stderr) {
-        await this.errorService.handleError(
+        this.errorService.handleError(
           "Error launching game",
           `${stderr}`
         );
       }
     } catch (error) {
       await this.postLaunch();
-      await this.errorService.handleError("Error launching game", `${error}`);
+      this.errorService.handleError("Error launching game", `${error}`);
     }
   }
 

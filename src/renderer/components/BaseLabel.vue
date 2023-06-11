@@ -10,8 +10,8 @@ import { Prop } from "vue-property-decorator";
 
 @Options({})
 export default class BaseLabel extends Vue {
-  @Prop() private centered!: boolean;
-  @Prop() private label!: string;
+  @Prop() centered!: boolean;
+  @Prop() label!: string;
 }
 </script>
 

@@ -31,9 +31,9 @@ import {
 export default class MO2Modal extends Vue {
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  private mo2Running = false;
+  mo2Running = false;
 
-  async created() {
+  override async created() {
     await this.checkIfRunning();
     this.watchMO2Running();
   }

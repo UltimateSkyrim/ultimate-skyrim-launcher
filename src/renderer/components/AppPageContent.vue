@@ -18,9 +18,9 @@ import { Prop } from "vue-property-decorator";
 
 export default class AppPageContent extends Vue {
   @Prop({ required: false }) title!: string;
-  @Prop({ default: true }) private spacing!: boolean;
-  @Prop({ default: false }) private center!: boolean;
-  @Prop({ default: false }) private scrollable!: boolean;
+  @Prop({ default: true }) spacing!: boolean;
+  @Prop({ default: false }) center!: boolean;
+  @Prop({ default: false }) scrollable!: boolean;
 }
 </script>
 

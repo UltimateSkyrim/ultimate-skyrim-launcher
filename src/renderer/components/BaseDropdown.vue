@@ -11,13 +11,13 @@
     </template>
 
     <div
+      v-click-away="() => toggleOpenState(false)"
       class="c-select u-text"
       :class="{
         'c-select--fixed-width': !grow,
         'c-select--open': isOpen && !loading,
         'c-select--closed': !isOpen && !loading,
       }"
-      v-click-away="() => toggleOpenState(false)"
     >
       <div
         class="c-select__head u-text"

@@ -5,9 +5,9 @@
       type="text"
       :readonly="readonly"
       class="c-input"
+      :value="value"
       @input="input"
       @click="click"
-      :value="value"
     />
   </div>
 </template>
@@ -22,10 +22,10 @@ import BaseLabel from "@/renderer/components/BaseLabel.vue";
   emits: ["input", "click"],
 })
 export default class BaseInput extends Vue {
-  @Prop({ required: true }) private label!: string;
-  @Prop({ default: false }) private readonly!: boolean;
-  @Prop({ default: false }) private centered!: boolean;
-  @Prop() private value!: string;
+  @Prop({ required: true }) label!: string;
+  @Prop({ default: false }) readonly!: boolean;
+  @Prop({ default: false }) centered!: boolean;
+  @Prop() value!: string;
 
   @Emit()
   input(event: Event) {

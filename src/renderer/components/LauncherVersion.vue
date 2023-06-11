@@ -37,7 +37,7 @@ import BaseLink from "@/renderer/components/BaseLink.vue";
   },
 })
 export default class LauncherVersion extends Vue {
-  @Prop() private version: string | null = null;
+  @Prop() version: string | null = null;
 }
 </script>
 

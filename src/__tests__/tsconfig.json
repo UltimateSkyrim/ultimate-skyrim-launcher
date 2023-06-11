@@ -3,33 +3,24 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
-    "outDir": "../../dist/renderer",
-    "jsx": "preserve",
+    "outDir": "../../dist/__tests__",
     "resolveJsonModule": true,
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
     "paths": {
       "@/*": [
-        "./src/*"
+        "./src/*",
       ]
     }
   },
   "include": [
-    "./**/*.vue",
-    "./**/*.tsx",
     "./**/*.ts",
     "../shared/types/*.ts"
   ],
   "references": [
     {
-      "path": "../main"
+      "path": "../shared"
     },
     {
-      "path": "../shared"
+      "path": "../main"
     }
   ]
 }

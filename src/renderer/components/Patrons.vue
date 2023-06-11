@@ -38,7 +38,7 @@
 <script lang="ts">
 import { Options as Component, Vue } from "vue-class-component";
 import BaseList from "./BaseList.vue";
-import { PatreonService } from "@/renderer/services/patreon.service";
+import type { PatreonService } from "@/renderer/services/patreon.service";
 import {
   injectStrict,
   SERVICE_BINDINGS,
@@ -57,7 +57,7 @@ export default class Patrons extends Vue {
   otherPatrons: string[] = [];
   failedToGetPatrons = false;
 
-  async created() {
+  override async created() {
     this.patreonService = injectStrict(SERVICE_BINDINGS.PATRON_SERVICE);
 
     try {

@@ -4,3 +4,4 @@ wallaby.js
 babel.config.js
 lint-staged.config.js
 vue.config.js
+**/*.eslintrc*

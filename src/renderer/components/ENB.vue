@@ -1,10 +1,10 @@
 <template>
   <BaseDropdown
+    v-if="enbPresets !== null && selectedEnb !== null"
     :current-selection="selectedEnb"
     :options="enbPresets"
     :grow="true"
     :show-tooltip-on-hover="true"
-    v-if="enbPresets !== null && selectedEnb !== null"
     @selected="onEnbChanged"
   >
     Uses GPU. Determines the quality of post-processing effects: ambient
@@ -21,7 +21,7 @@ import {
   injectStrict,
   SERVICE_BINDINGS,
 } from "@/renderer/services/service-container";
-import { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import { ENB_EVENTS } from "@/main/controllers/enb/enb.events";
 import {
   DISABLE_LOADING_EVENT,
@@ -38,7 +38,7 @@ export default class ENB extends Vue {
   eventService = injectStrict(SERVICE_BINDINGS.EVENT_SERVICE);
   ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  async created() {
+  override async created() {
     this.enbPresets = this.directoryMapToSelectOptions(
       await this.getEnbPresets()
     );
@@ -49,7 +49,7 @@ export default class ENB extends Vue {
     const enbPreference = await this.ipcService.invoke(
       ENB_EVENTS.GET_ENB_PREFERENCE
     );
-    return enbs.find((enb) => enb.value === enbPreference) ?? enbs[0];
+    return enbs.find((enb) => enb.value === enbPreference) ?? enbs[0] as SelectOption;
   }
 
   async getEnbPresets(): Promise<FriendlyDirectoryMap[]> {

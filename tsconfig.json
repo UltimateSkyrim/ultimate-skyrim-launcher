@@ -10,7 +10,12 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
   },
   "references": [
     {
@@ -21,8 +26,12 @@
     },
     {
       "path": "./src/shared"
+    },
+    {
+      "path": "./src/__tests__"
     }
   ],
+  "include": [],
   "exclude": [
     "node_modules"
   ]

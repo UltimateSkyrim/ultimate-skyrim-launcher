@@ -194,9 +194,9 @@ describe("Config Service", () => {
     expect(configService.getPreferences()).to.eql(mockStore);
   });
 
-  it("should open the preferences in an editor", async () => {
+  it("should open the preferences in an editor", () => {
     const mockEditor = sinon.stub(mockStore, "openInEditor");
-    await configService.editPreferences();
+    configService.editPreferences();
     expect(mockEditor.calledOnce).to.eql(true);
   });
 });

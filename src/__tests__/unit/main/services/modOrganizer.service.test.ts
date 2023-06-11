@@ -1,5 +1,5 @@
 import {
-  MO2Names,
+  MO2_NAMES,
   ModOrganizerService,
 } from "@/main/services/modOrganizer.service";
 import {
@@ -47,7 +47,7 @@ describe("ModOrganizer service", () => {
 
   it("should determine if Mod Organizer is running", async () => {
     mockSystemService.stubs.isProcessRunning
-      .withArgs(MO2Names.MO2EXE)
+      .withArgs(MO2_NAMES.MO2EXE)
       .resolves(true);
 
     modOrganizerService = new ModOrganizerService(
@@ -70,7 +70,7 @@ describe("ModOrganizer service", () => {
 
     mockFs({
       [mockModDirectory]: {
-        [MO2Names.MO2Settings]: `
+        [MO2_NAMES.MO2Settings]: `
         [customExecutables]
         size=1
         1\\binary=mock/first/custom/executable.exe

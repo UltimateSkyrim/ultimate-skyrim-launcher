@@ -6,10 +6,10 @@ import { IIniObjectSection, parse, stringify } from "js-ini";
 import fs from "fs";
 import { screen } from "electron";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import type { Resolution } from "@/Resolution";
+import type { Resolution } from "@/shared/types/Resolution";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";
-import { name as modpackName } from "@/main/wildlander/modpack.json";
+import { name as modpackName } from "@/shared/wildlander/modpack.json";
 import { InstructionService } from "@/main/services/instruction.service";
 import { Logger, LoggerBinding } from "@/main/logger";
 

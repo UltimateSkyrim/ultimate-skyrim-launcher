@@ -29,8 +29,8 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { Modpack } from "@/modpack-metadata";
-import modpack from "@/main/wildlander/modpack.json";
+import type { Modpack } from "@/shared/types/modpack-metadata";
+import modpack from "@/shared/wildlander/modpack.json";
 import BaseLink from "@/renderer/components/BaseLink.vue";
 import BaseImage from "@/renderer/components/BaseImage.vue";
 
@@ -38,9 +38,9 @@ import BaseImage from "@/renderer/components/BaseImage.vue";
   components: { BaseLink, BaseImage },
 })
 export default class TheHeader extends Vue {
-  private modpack!: Modpack;
+  modpack!: Modpack;
 
-  created() {
+  override created() {
     this.modpack = modpack;
   }
 }

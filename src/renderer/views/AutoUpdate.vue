@@ -1,7 +1,7 @@
 <template>
   <AppModal name="autoUpdate">
     <div class="l-column l-center">
-      <div class="c-auto-update__loading" v-if="checkingForUpdate">
+      <div v-if="checkingForUpdate" class="c-auto-update__loading">
         Checking for update...
       </div>
       <template v-else>
@@ -36,12 +36,12 @@ import {
   },
 })
 export default class AutoUpdate extends Vue {
-  private downloadProgress = 0;
-  private checkingForUpdate = true;
+  downloadProgress = 0;
+  checkingForUpdate = true;
 
   private ipcService = injectStrict(SERVICE_BINDINGS.IPC_SERVICE);
 
-  async created() {
+  override async created() {
     this.ipcService.on(UPDATE_EVENTS.UPDATE_AVAILABLE, () => {
       this.checkingForUpdate = false;
     });

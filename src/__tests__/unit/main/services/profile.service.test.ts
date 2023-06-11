@@ -1,5 +1,5 @@
 import mockFs from "mock-fs";
-import type { FriendlyDirectoryMap } from "@/modpack-metadata";
+import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import {
   createStubInstance,
   expect,

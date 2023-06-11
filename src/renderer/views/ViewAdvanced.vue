@@ -67,8 +67,8 @@
             <div class="c-settings__label">Show hidden profiles</div>
             <div class="c-settings__action c-settings__action--toggle">
               <Toggle
-                @click="setShowHiddenProfiles"
                 v-model="showHiddenProfiles"
+                @click="setShowHiddenProfiles"
               />
             </div>
           </div>
@@ -76,8 +76,8 @@
             <div class="c-settings__label">Check pre-requisites</div>
             <div class="c-settings__action c-settings__action--toggle">
               <Toggle
-                @click="setCheckPrerequisites"
                 v-model="checkPrerequisites"
+                @click="setCheckPrerequisites"
               />
             </div>
           </div>
@@ -159,7 +159,7 @@ export default class Settings extends Vue {
   private showHiddenProfiles = false;
   private checkPrerequisites = true;
 
-  async created() {
+  override async created() {
     this.showHiddenProfiles = await this.ipcService.invoke(
       PROFILE_EVENTS.GET_SHOW_HIDDEN_PROFILES
     );
