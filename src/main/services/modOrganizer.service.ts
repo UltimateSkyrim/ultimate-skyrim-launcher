@@ -219,10 +219,7 @@ export class ModOrganizerService {
       const { stderr } = await promisify(childProcess.exec)(mo2Command);
       await this.postLaunch();
       if (stderr) {
-        this.errorService.handleError(
-          "Error launching game",
-          `${stderr}`
-        );
+        this.errorService.handleError("Error launching game", `${stderr}`);
       }
     } catch (error) {
       await this.postLaunch();

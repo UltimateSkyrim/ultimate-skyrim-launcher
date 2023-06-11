@@ -36,7 +36,10 @@ export class InstructionService {
     return modpackAdditionalInstructions as AdditionalInstructions;
   }
 
-  async execute(instructions: AdditionalInstructions, target?: string): Promise<boolean | void> {
+  async execute(
+    instructions: AdditionalInstructions,
+    target?: string
+  ): Promise<boolean | void> {
     const modpackVersion = await this.wabbajackService.getModpackVersion();
 
     for (const instruction of instructions) {

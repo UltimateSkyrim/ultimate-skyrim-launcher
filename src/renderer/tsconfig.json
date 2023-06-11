@@ -6,24 +6,12 @@
     "outDir": "../../dist/renderer",
     "jsx": "preserve",
     "resolveJsonModule": true,
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "./**/*.vue",
-    "./**/*.tsx",
-    "./**/*.ts",
-    "../shared/types/*.ts"
-  ],
+  "include": ["./**/*.vue", "./**/*.tsx", "./**/*.ts", "../shared/types/*.ts"],
   "references": [
     {
       "path": "../main"

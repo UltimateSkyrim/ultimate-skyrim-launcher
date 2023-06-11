@@ -6,15 +6,10 @@
     "outDir": "../../dist/main",
     "resolveJsonModule": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "./**/*.ts",
-    "../shared/types/*.ts"
-  ],
+  "include": ["./**/*.ts", "../shared/types/*.ts"],
   "references": [
     {
       "path": "../shared"

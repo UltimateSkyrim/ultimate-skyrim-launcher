@@ -66,9 +66,7 @@ export class MigrationService {
         "Select first profile so the old original one isn't reused"
       );
       this.profileService.setProfilePreference(
-        (
-          await this.profileService.getProfiles()
-        )[0]!.real
+        (await this.profileService.getProfiles())[0]!.real
       );
       this.logger.debug(
         `New profile is ${await this.profileService.getProfilePreference()}`

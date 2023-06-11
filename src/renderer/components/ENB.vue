@@ -49,7 +49,10 @@ export default class ENB extends Vue {
     const enbPreference = await this.ipcService.invoke(
       ENB_EVENTS.GET_ENB_PREFERENCE
     );
-    return enbs.find((enb) => enb.value === enbPreference) ?? enbs[0] as SelectOption;
+    return (
+      enbs.find((enb) => enb.value === enbPreference) ??
+      (enbs[0] as SelectOption)
+    );
   }
 
   async getEnbPresets(): Promise<FriendlyDirectoryMap[]> {

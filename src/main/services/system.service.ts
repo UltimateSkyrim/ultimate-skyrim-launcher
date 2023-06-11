@@ -75,7 +75,8 @@ export class SystemService {
     the renderer logs have to be manually cleared here.
     Because even if the entire logging object is exposed to the renderer it is unable to clear the file.
     */
-    const loggerPath = this.logger.transports?.file.getFile().path.split("\\") || [];
+    const loggerPath =
+      this.logger.transports?.file.getFile().path.split("\\") || [];
     // replace main.log with renderer.log
     loggerPath.pop();
     loggerPath.push("renderer.log");

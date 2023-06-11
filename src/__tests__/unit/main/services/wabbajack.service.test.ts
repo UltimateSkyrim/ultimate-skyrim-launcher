@@ -72,10 +72,7 @@ describe("Wabbajack service", () => {
 
     sinon.stub(SystemService, "getLocalAppData").returns(mockLocalAppData);
 
-    wabbajackService = new WabbajackService(
-      mockModpackService,
-      mockLogger()
-    );
+    wabbajackService = new WabbajackService(mockModpackService, mockLogger());
   });
 
   afterEach(() => {

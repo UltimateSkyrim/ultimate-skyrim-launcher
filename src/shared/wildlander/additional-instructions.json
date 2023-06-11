@@ -24,10 +24,7 @@
   {
     "action": "enable-plugin",
     "type": "resolution-ratio",
-    "target": [
-      "21:9",
-      "32:9"
-    ],
+    "target": ["21:9", "32:9"],
     "plugin": "widescreen_skyui_fix.esp"
   }
 ]

@@ -1,6 +1,10 @@
 import mock from "mock-require";
 import { StartupService } from "@/main/services/startup.service";
-import { createStubInstance, sinon, StubbedInstanceWithSinonAccessor } from "@loopback/testlab";
+import {
+  createStubInstance,
+  sinon,
+  StubbedInstanceWithSinonAccessor,
+} from "@loopback/testlab";
 import { ModpackService } from "@/main/services/modpack.service";
 import { LauncherService } from "@/main/services/launcher.service";
 import { WabbajackService } from "@/main/services/wabbajack.service";
