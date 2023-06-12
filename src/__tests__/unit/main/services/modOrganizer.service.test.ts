@@ -1,6 +1,4 @@
-import {
-  ModOrganizerService,
-} from "@/main/services/modOrganizer.service";
+import { ModOrganizerService } from "@/main/services/modOrganizer.service";
 import {
   createStubInstance,
   expect,
