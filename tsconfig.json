@@ -31,7 +31,9 @@
       "path": "./src/__tests__"
     }
   ],
-  "include": [],
+  "include": [
+    "src/main.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

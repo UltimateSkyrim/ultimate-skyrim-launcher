@@ -1,10 +1,10 @@
 import { app, protocol } from "electron";
-import { isDevelopment } from "./services/config.service";
+import { isDevelopment } from "./main/services/config.service";
 import { autoUpdater } from "electron-updater";
-import { LauncherApplication } from "./application";
-import { ErrorService } from "./services/error.service";
-import { WindowService } from "./services/window.service";
-import { newLogInstance } from "./logger";
+import { LauncherApplication } from "./main/application";
+import { ErrorService } from "./main/services/error.service";
+import { WindowService } from "./main/services/window.service";
+import { newLogInstance } from "./main/logger";
 
 const isSingleInstance = app.requestSingleInstanceLock();
 if (!isSingleInstance) {

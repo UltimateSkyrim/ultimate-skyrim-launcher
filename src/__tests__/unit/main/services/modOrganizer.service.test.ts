@@ -1,5 +1,4 @@
 import {
-  MO2_NAMES,
   ModOrganizerService,
 } from "@/main/services/modOrganizer.service";
 import {
@@ -17,6 +16,7 @@ import { SystemService } from "@/main/services/system.service";
 import { GraphicsService } from "@/main/services/graphics.service";
 import mockFs from "mock-fs";
 import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { MO2_NAMES } from "@/shared/enums/mo2";
 
 describe("ModOrganizer service", () => {
   let mockEnbService: StubbedInstanceWithSinonAccessor<EnbService>;

@@ -1,5 +1,4 @@
 import fs from "fs";
-import { MO2_NAMES } from "@/main/services/modOrganizer.service";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import modpack from "@/shared/wildlander/modpack.json";
 import type { IsModpackValidResponse } from "@/main/controllers/modpack/mopack.events";
@@ -8,6 +7,7 @@ import { service } from "@loopback/core";
 import { ConfigService } from "@/main/services/config.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { MO2_NAMES } from "@/shared/enums/mo2";
 
 @injectable({
   scope: BindingScope.SINGLETON,

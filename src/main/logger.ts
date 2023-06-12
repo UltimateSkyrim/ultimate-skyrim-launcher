@@ -1,6 +1,5 @@
-import { BindingKey } from "@loopback/context/dist/binding-key";
+import { BindingKey, uuid } from "@loopback/core";
 import log, { ElectronLog } from "electron-log";
-import { uuid } from "@loopback/context/dist/value-promise";
 
 export type Logger = ElectronLog;
 export const LoggerBinding = BindingKey.create<Logger>("bindings.logger");

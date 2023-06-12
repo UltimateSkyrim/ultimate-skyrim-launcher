@@ -18,11 +18,7 @@ import { SystemService } from "@/main/services/system.service";
 import { GraphicsService } from "@/main/services/graphics.service";
 import type { ModOrganizerIni } from "@/shared/types/ModOrganizer.ini";
 import { Logger, LoggerBinding } from "@/main/logger";
-
-export const enum MO2_NAMES {
-  MO2EXE = "ModOrganizer.exe",
-  MO2Settings = "ModOrganizer.ini",
-}
+import { MO2_NAMES } from "@/shared/enums/mo2";
 
 @injectable({
   scope: BindingScope.SINGLETON,
