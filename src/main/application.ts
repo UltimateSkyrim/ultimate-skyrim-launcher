@@ -36,6 +36,19 @@ export class LauncherApplication extends BootMixin(Application) {
         process.exit(1);
       }
     });
+
+    this.bootOptions = {
+      controllers: {
+        dirs: ["controllers"],
+        extensions: [".controller.ts", ".controller.js"],
+        nested: true,
+      },
+      services: {
+        dirs: ["services"],
+        extensions: [".service.ts", ".service.js"],
+        nested: true,
+      },
+    };
   }
 
   public getServiceByClass<T>(cls: Constructor<T>): Promise<T> {

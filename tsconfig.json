@@ -12,9 +12,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
   "references": [
@@ -31,10 +29,9 @@
       "path": "./src/__tests__"
     }
   ],
-  "include": [
-    "src/main.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/main.ts"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "files": true
+  }
 }

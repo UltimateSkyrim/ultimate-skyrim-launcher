@@ -25,10 +25,8 @@
     "lint:prettier:fix": "npm run lint:prettier -- --write",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "pretest": "npm run compile",
-    "test": "npm run test:unit",
-    "test:coverage": "lb-nyc npm run test",
-    "test:unit": "lb-mocha \"dist/__tests__/unit\""
+    "test": "cross-env TS_NODE_PROJECT=./src/__tests__/tsconfig.json lb-mocha",
+    "test:coverage": "lb-nyc npm run test"
   },
   "nodemonConfig": {
     "watch": [
@@ -37,7 +35,6 @@
     "ignore": [
       "src/renderer/**"
     ],
-    "exec": "npm run start",
     "ext": "*"
   },
   "main": "background.js",
@@ -97,6 +94,7 @@
     "@vue/tsconfig": "^0.4.0",
     "babel-eslint": "^10.1.0",
     "commitlint": "^15.0.0",
+    "cross-env": "^7.0.3",
     "electron": "^16.0.5",
     "electron-devtools-installer": "^3.1.0",
     "eslint": "^8.42.0",
@@ -118,6 +116,7 @@
     "stylelint": "^13.12.0",
     "stylelint-config-recommended-scss": "^4.3.0",
     "stylelint-scss": "^3.21.0",
+    "ts-node": "^10.9.1",
     "tsc-alias": "^1.6.4",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.9.5",

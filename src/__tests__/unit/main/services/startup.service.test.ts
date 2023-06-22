@@ -1,4 +1,8 @@
 import mock from "mock-require";
+// electron-is-dev throws an error if not running in electron
+mock("electron-is-dev", () => {
+  return true;
+});
 import { StartupService } from "@/main/services/startup.service";
 import {
   createStubInstance,
@@ -14,10 +18,6 @@ import { BlacklistService } from "@/main/services/blacklist.service";
 import { ErrorService } from "@/main/services/error.service";
 import { WindowService } from "@/main/services/window.service";
 import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
-// electron-is-dev throws an error if not running in electron
-mock("electron-is-dev", () => {
-  return true;
-});
 
 describe("Startup service", () => {
   let mockModpackService: StubbedInstanceWithSinonAccessor<ModpackService>;
