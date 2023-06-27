@@ -32,7 +32,7 @@ export class WabbajackService {
       v2Modpacks = await this.getInstalledModpacksFromWabbajackV2();
     } else {
       this.logger.warn(
-        `${this.wabbajackV2InstalledModpacksPath} does not exist.`
+        `Wabbajack V2 ${this.wabbajackV2InstalledModpacksPath} does not exist.`
       );
     }
 
@@ -40,7 +40,7 @@ export class WabbajackService {
       v3Modpacks = await this.getInstalledModpacksFromWabbajackV3();
     } else {
       this.logger.warn(
-        `${this.wabbajackV3InstalledModpacksPath} does not exist.`
+        `Wabbajack V3 ${this.wabbajackV3InstalledModpacksPath}/ does not exist.`
       );
     }
 

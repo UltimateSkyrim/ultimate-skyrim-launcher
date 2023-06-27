@@ -26,7 +26,8 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
     "test": "cross-env TS_NODE_PROJECT=./src/__tests__/tsconfig.json lb-mocha",
-    "test:coverage": "lb-nyc npm run test"
+    "test:coverage": "lb-nyc npm run test",
+    "generate:modpack-files": "ts-node ./src/scripts/generate-modpack-files.ts"
   },
   "nodemonConfig": {
     "watch": [
@@ -35,6 +36,7 @@
     "ignore": [
       "src/renderer/**"
     ],
+    "exec": "npm run start",
     "ext": "*"
   },
   "main": "background.js",
