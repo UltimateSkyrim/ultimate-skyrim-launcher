@@ -4,10 +4,10 @@ module.exports = function (w) {
       "src/**/*.ts",
       "src/**/*.js",
       "src/**/*.json",
-      "!src/__tests__/**/unit/**/*.test.ts",
+      "!src/__tests__/**/*.test.ts",
       "tsconfig.json",
     ],
-    tests: ["src/__tests__/**/unit/**/*.test.ts"],
+    tests: ["src/__tests__/**/*.test.ts"],
 
     testFramework: "mocha",
 

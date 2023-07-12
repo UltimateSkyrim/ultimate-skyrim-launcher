@@ -8,6 +8,7 @@ import path from "path";
 import { copy, existsSync } from "fs-extra";
 import { Logger, LoggerBinding } from "@/main/logger";
 import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
+import { NoGraphicsError } from "@/shared/errors/no-graphics.error";
 
 export class GraphicsService {
   constructor(
@@ -41,9 +42,9 @@ export class GraphicsService {
 
   async getDefaultPreference() {
     return (
-      (await this.getGraphics())[0]?.real ??
+      (await this.getGraphics())?.[0]?.real ??
       (() => {
-        throw new Error("No graphics found");
+        throw new NoGraphicsError("No graphics found");
       })()
     );
   }
@@ -162,26 +163,33 @@ export class GraphicsService {
   }
 
   private async getUnmappedGraphics(mappedGraphics: FriendlyDirectoryMap[]) {
-    return (
-      (
-        await fs.promises.readdir(this.graphicsDirectory(), {
-          withFileTypes: true,
-        })
-      )
-        .filter((dirent) => dirent.isDirectory())
-        .map((dirent) => dirent.name)
-        .filter(isNotJunk)
-        .map(
-          (preset): FriendlyDirectoryMap => ({ real: preset, friendly: preset })
+    if (fs.existsSync(this.graphicsDirectory())) {
+      return (
+        (
+          await fs.promises.readdir(this.graphicsDirectory(), {
+            withFileTypes: true,
+          })
         )
-        // Remove any graphics that have a mapping
-        .filter(
-          (unmappedSetting) =>
-            !mappedGraphics.find(
-              (mappedSetting: FriendlyDirectoryMap) =>
-                mappedSetting.real === unmappedSetting.real
-            )
-        )
-    );
+          .filter((dirent) => dirent.isDirectory())
+          .map((dirent) => dirent.name)
+          .filter(isNotJunk)
+          .map(
+            (preset): FriendlyDirectoryMap => ({
+              real: preset,
+              friendly: preset,
+            })
+          )
+          // Remove any graphics that have a mapping
+          .filter(
+            (unmappedSetting) =>
+              !mappedGraphics.find(
+                (mappedSetting: FriendlyDirectoryMap) =>
+                  mappedSetting.real === unmappedSetting.real
+              )
+          )
+      );
+    } else {
+      return [];
+    }
   }
 }

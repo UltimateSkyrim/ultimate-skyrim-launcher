@@ -12,6 +12,7 @@ import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { ProfileService } from "@/main/services/profile.service";
 import fs from "fs";
 import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { NoGraphicsError } from "@/shared/errors/no-graphics.error";
 
 describe("Graphics service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
@@ -79,6 +80,19 @@ describe("Graphics service", () => {
 
     expect(await graphicsService.getDefaultPreference()).to.eql(
       "mock-real-name"
+    );
+  });
+
+  it("should throw an error if the default graphics cannot be found", async () => {
+    const mockLauncherDirectory = "mock/directory";
+    mockConfigService.stubs.launcherDirectory.returns(mockLauncherDirectory);
+
+    mockFs({
+      [`${mockLauncherDirectory}/namesGraphics.json`]: JSON.stringify([]),
+    });
+
+    await expect(graphicsService.getDefaultPreference()).to.be.rejectedWith(
+      NoGraphicsError
     );
   });
 

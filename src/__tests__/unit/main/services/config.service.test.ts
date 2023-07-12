@@ -126,6 +126,15 @@ describe("Config Service", () => {
     );
   });
 
+  it("should set the preference if the value is an object", () => {
+    configService.setPreference(USER_PREFERENCE_KEYS.GRAPHICS, {
+      mock: "value",
+    });
+    expect(mockStore.get(USER_PREFERENCE_KEYS.GRAPHICS)).to.eql({
+      mock: "value",
+    });
+  });
+
   describe("Set default preferences", () => {
     it("should set the default preference if the key doesn't exist", async () => {
       await configService.setDefaultPreferences({
