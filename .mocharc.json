@@ -2,8 +2,12 @@
   "$schema": "https://json.schemastore.org/mochrarc",
   "exit": true,
   "recursive": true,
-  "require": ["ts-node/register", "tsconfig-paths/register"],
+  "require": [
+    "ts-node/register",
+    "tsconfig-paths/register",
+    "source-map-support/register"
+  ],
   "reporter": "spec",
   "extensions": ["ts"],
-  "spec": ["src/__tests__/**/*.unit.ts", "src/__tests__/**/*.test.ts"]
+  "spec": ["src/__tests__/**/*.test.ts"]
 }
