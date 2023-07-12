@@ -38,6 +38,14 @@ if (isDevelopment) {
       app.quit();
     });
   }
+
+  if (process.platform !== "win32") {
+    if (!process.env["APPDATA"]) {
+      // The application requires a valid modpack installation.
+      // If not working on Windows, this is assumed to be local files generated from `npm run generate:modpack-files` for development purposes.
+      process.env["APPDATA"] = `${__dirname}/../mock-files/local`;
+    }
+  }
 }
 
 const start = async () => {

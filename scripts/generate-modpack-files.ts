@@ -1,78 +1,43 @@
 import fs from "fs";
 import { removeSync } from "fs-extra";
-import { stringify } from "js-ini";
 import path from "path";
+import { ModOrganizerIni } from "./files/ModOrganizer.ini";
+import { SSEDisplayTweaks } from "./files/SSEDisplayTweaks.ini";
+import namesMO2 from "./files/namesMO2.json";
+import namesENB from "./files/namesENB.json";
+import { archives } from "./files/profiles/archives.txt";
+import { loadorder } from "./files/profiles/loadorder.txt";
+import { modlist } from "./files/profiles/modlist.txt";
+import { plugins } from "./files/profiles/plugins.txt";
+import { settings } from "./files/profiles/settings.ini";
+import { skyrim } from "./files/profiles/Skyrim.ini";
+import { skyrimCustom } from "./files/profiles/SkyrimCustom.ini";
+import { skyrimPrefs } from "./files/profiles/SkyrimPrefs.ini";
 
 type DirectoryStructure = { [name: string]: string | DirectoryStructure };
 
-const rootPath = path.resolve(`${__dirname}/../../mock-files`);
+const rootPath = path.resolve(`${__dirname}/../mock-files`);
 const modpackPath = `${rootPath}/mock-modpack-install`;
 const appDataPath = `${rootPath}/local`;
 
 const createDirectoryStructure = (
   directoryObject: DirectoryStructure,
   basePath = ""
-): void => {
+) => {
   fs.mkdirSync(basePath, { recursive: true });
 
   for (const [name, item] of Object.entries(directoryObject)) {
     const itemPath = `${basePath}/${name}`;
+
     if (typeof item === "object") {
       fs.mkdirSync(itemPath, { recursive: true });
       createDirectoryStructure(item, itemPath);
     } else {
       fs.writeFileSync(itemPath, item);
+      fs.chmodSync(itemPath, 0o777); // Set file permissions to 777 so the app can execute them
     }
   }
 };
-
-const ModOrganizerIni = stringify({
-  General: {
-    gameName: "Skyrim Special Edition",
-    selected_profile: "@Byte_Array(0_Wildlander-STANDARD)",
-  },
-  Settings: {
-    lock_gui: false,
-  },
-});
-
-const namesENBIni = JSON.stringify([
-  {
-    real: "1_Shaders_ULTRA",
-    friendly: "Ultra Shaders",
-  },
-  {
-    real: "1_Shaders_HIGH",
-    friendly: "High Shaders",
-  },
-  {
-    real: "1_Shaders_LOW",
-    friendly: "Low Shaders",
-  },
-]);
-
-const namesMO2Ini = JSON.stringify([
-  {
-    real: "1_Wildlander-ULTRA",
-    friendly: "Ultra Graphics",
-  },
-  {
-    real: "1_Wildlander-HIGH",
-    friendly: "High Graphics",
-  },
-  {
-    real: "1_Wildlander-MEDIUM",
-    friendly: "Medium Graphics",
-  },
-  {
-    real: "1_Wildlander-LOW",
-    friendly: "Low Graphics",
-  },
-  {
-    real: "1_Wildlander-POTATO",
-    friendly: "Potato Graphics",
-  },
-]);
 
 const enbFiles = (content: string) => {
   return {
@@ -89,17 +54,16 @@ const enbFiles = (content: string) => {
   };
 };
 
-const SSEDisplayTweaks = stringify({
-  Render: {
-    Fullscreen: false,
-    Borderless: true,
-    BorderlessUpscale: true,
-    Resolution: "3840x2160",
-  },
-});
+const executable = (name: string) => `
+#!/bin/bash
 
+echo "Ran ${name} executable"
+`;
+/**
+ * The files that are needed by the launcher for a "valid" modpack
+ */
 const mockModpack: DirectoryStructure = {
-  "ModOrganizer.exe": "",
+  "ModOrganizer.exe": executable("ModOrganizer"),
   "ModOrganizer.ini": ModOrganizerIni,
   mods: {
     Wildlander: {
@@ -112,48 +76,63 @@ const mockModpack: DirectoryStructure = {
   },
   profiles: {
     "1_Wildlander-ULTRA": {
-      "modlist.txt": "",
-      "plugins.txt": "",
-      "Skyrim.ini": "",
-      "SkyrimCustom.ini": "",
-      "SkyrimPrefs.ini": "",
+      "archives.txt": archives(),
+      "loadorder.txt": loadorder(),
+      "modlist.txt": modlist(),
+      "plugins.txt": plugins(),
+      "settings.ini": settings(),
+      "Skyrim.ini": skyrim(),
+      "SkyrimCustom.ini": skyrimCustom(),
+      "SkyrimPrefs.ini": skyrimPrefs(),
     },
     "1_Wildlander-HIGH": {
-      "modlist.txt": "",
-      "plugins.txt": "",
-      "Skyrim.ini": "",
-      "SkyrimCustom.ini": "",
-      "SkyrimPrefs.ini": "",
+      "archives.txt": archives(),
+      "loadorder.txt": loadorder(),
+      "modlist.txt": modlist(),
+      "plugins.txt": plugins(),
+      "settings.ini": settings(),
+      "Skyrim.ini": skyrim(),
+      "SkyrimCustom.ini": skyrimCustom(),
+      "SkyrimPrefs.ini": skyrimPrefs(),
     },
     "1_Wildlander-MEDIUM": {
-      "modlist.txt": "",
-      "plugins.txt": "",
-      "Skyrim.ini": "",
-      "SkyrimCustom.ini": "",
-      "SkyrimPrefs.ini": "",
+      "archives.txt": archives(),
+      "loadorder.txt": loadorder(),
+      "modlist.txt": modlist(),
+      "plugins.txt": plugins(),
+      "settings.ini": settings(),
+      "Skyrim.ini": skyrim(),
+      "SkyrimCustom.ini": skyrimCustom(),
+      "SkyrimPrefs.ini": skyrimPrefs(),
     },
     "1_Wildlander-LOW": {
-      "modlist.txt": "",
-      "plugins.txt": "",
-      "Skyrim.ini": "",
-      "SkyrimCustom.ini": "",
-      "SkyrimPrefs.ini": "",
+      "archives.txt": archives(),
+      "loadorder.txt": loadorder(),
+      "modlist.txt": modlist(),
+      "plugins.txt": plugins(),
+      "settings.ini": settings(),
+      "Skyrim.ini": skyrim(),
+      "SkyrimCustom.ini": skyrimCustom(),
+      "SkyrimPrefs.ini": skyrimPrefs(),
     },
     "1_Wildlander-POTATO": {
-      "modlist.txt": "",
-      "plugins.txt": "",
-      "Skyrim.ini": "",
-      "SkyrimCustom.ini": "",
-      "SkyrimPrefs.ini": "",
+      "archives.txt": archives(),
+      "loadorder.txt": loadorder(),
+      "modlist.txt": modlist(),
+      "plugins.txt": plugins(),
+      "settings.ini": settings(),
+      "Skyrim.ini": skyrim(),
+      "SkyrimCustom.ini": skyrimCustom(),
+      "SkyrimPrefs.ini": skyrimPrefs(),
     },
   },
   "Stock Game": {
-    "SkyrimSE.exe": "",
-    "SkyrimSELauncher.exe": "",
+    "SkyrimSE.exe": executable("SkyrimSE"),
+    "SkyrimSELauncher.exe": executable("SkyrimSELauncher"),
   },
   launcher: {
-    "namesMO2.json": namesMO2Ini,
-    "namesENB.json": namesENBIni,
+    "namesMO2.json": JSON.stringify(namesMO2),
+    "namesENB.json": JSON.stringify(namesENB),
     "ENB Presets": {
       "1_Shaders_ULTRA": enbFiles("ultra"),
       "1_Shaders_HIGH": enbFiles("high"),
@@ -162,6 +141,10 @@ const mockModpack: DirectoryStructure = {
   },
 };
 
+/**
+ * Wabbajack saves its settings to APPDATA.
+ * If working on a system that isn't windows, this can be useful to mock APPDATA.
+ */
 const mockAPPDATALocal: DirectoryStructure = {
   Wabbajack: {
     saved_settings: {

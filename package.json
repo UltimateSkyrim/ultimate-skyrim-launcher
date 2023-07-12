@@ -27,7 +27,7 @@
     "postuninstall": "electron-builder install-app-deps",
     "test": "cross-env TS_NODE_PROJECT=./src/__tests__/tsconfig.json lb-mocha",
     "test:coverage": "lb-nyc npm run test",
-    "generate:modpack-files": "ts-node ./src/scripts/generate-modpack-files.ts"
+    "generate:modpack-files": "ts-node scripts/generate-modpack-files.ts"
   },
   "nodemonConfig": {
     "watch": [

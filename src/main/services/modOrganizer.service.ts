@@ -1,6 +1,6 @@
 import path from "path";
 import childProcess from "child_process";
-import { ConfigService } from "@/main/services/config.service";
+import { ConfigService, isDevelopment } from "@/main/services/config.service";
 import psList from "ps-list";
 import { dialog } from "electron";
 import fs from "fs";
@@ -178,7 +178,12 @@ export class ModOrganizerService {
         this.configService.getPreference(USER_PREFERENCE_KEYS.MOD_DIRECTORY),
         MO2_NAMES.MO2EXE
       );
-      const { stderr } = await promisify(childProcess.exec)(`"${MO2Path}"`);
+      const { stdout, stderr } = await promisify(childProcess.exec)(
+        `"${MO2Path}"`
+      );
+      if (isDevelopment) {
+        this.logger.debug(`MO2 stdout: ${stdout}`);
+      }
       if (stderr) {
         this.logger.error(`Error while executing ModOrganizer - ${stderr}`);
       }
@@ -212,7 +217,10 @@ export class ModOrganizerService {
       const mo2Command = `"${MO2Path}" -p "${profile}" "moshortcut://:${await this.getFirstCustomExecutableTitle()}"`;
       this.logger.debug(`Executing MO2 command: ${mo2Command}`);
 
-      const { stderr } = await promisify(childProcess.exec)(mo2Command);
+      const { stdout, stderr } = await promisify(childProcess.exec)(mo2Command);
+      if (isDevelopment) {
+        this.logger.debug(`MO2 stdout: ${stdout}`);
+      }
       await this.postLaunch();
       if (stderr) {
         this.errorService.handleError("Error launching game", `${stderr}`);

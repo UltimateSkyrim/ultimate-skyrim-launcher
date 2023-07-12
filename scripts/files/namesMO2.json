@@ -1,0 +1,22 @@
+[
+  {
+    "real": "1_Wildlander-ULTRA",
+    "friendly": "Ultra Graphics"
+  },
+  {
+    "real": "1_Wildlander-HIGH",
+    "friendly": "High Graphics"
+  },
+  {
+    "real": "1_Wildlander-MEDIUM",
+    "friendly": "Medium Graphics"
+  },
+  {
+    "real": "1_Wildlander-LOW",
+    "friendly": "Low Graphics"
+  },
+  {
+    "real": "1_Wildlander-POTATO",
+    "friendly": "Potato Graphics"
+  }
+]

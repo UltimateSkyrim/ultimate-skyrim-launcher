@@ -1,0 +1,14 @@
+[
+  {
+    "real": "1_Shaders_ULTRA",
+    "friendly": "Ultra Shaders"
+  },
+  {
+    "real": "1_Shaders_HIGH",
+    "friendly": "High Shaders"
+  },
+  {
+    "real": "1_Shaders_LOW",
+    "friendly": "Low Shaders"
+  }
+]
