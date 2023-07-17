@@ -2,6 +2,7 @@ import { ModOrganizerService } from "@/main/services/modOrganizer.service";
 import {
   createStubInstance,
   expect,
+  sinon,
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 import { EnbService } from "@/main/services/enb.service";
@@ -41,6 +42,7 @@ describe("ModOrganizer service", () => {
 
   afterEach(() => {
     mockFs.restore();
+    sinon.restore();
   });
 
   it("should determine if Mod Organizer is running", async () => {

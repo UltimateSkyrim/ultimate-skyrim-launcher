@@ -2,6 +2,7 @@ import mockFs from "mock-fs";
 import {
   createStubInstance,
   expect,
+  sinon,
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 import { GameService } from "@/main/services/game.service";
@@ -24,6 +25,7 @@ describe("GameService", () => {
 
   afterEach(() => {
     mockFs.restore();
+    sinon.restore();
   });
 
   it("should copy Skyrim logs if they exist", async () => {

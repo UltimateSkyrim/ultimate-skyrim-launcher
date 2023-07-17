@@ -1,8 +1,12 @@
-import { createStubInstance, expect } from "@loopback/testlab";
+import { createStubInstance, expect, sinon } from "@loopback/testlab";
 import { SystemService } from "@/main/services/system.service";
 import { BlacklistService } from "@/main/services/blacklist.service";
 
 describe("Blacklist service", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
   it("should return a list of blacklisted processes running", async () => {
     const mockSystemService = createStubInstance(SystemService);
 

@@ -2,6 +2,7 @@ import { SystemService } from "@/main/services/system.service";
 import {
   createStubInstance,
   expect,
+  sinon,
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 import { ConfigService } from "@/main/services/config.service";
@@ -18,6 +19,10 @@ describe("System service", () => {
   beforeEach(() => {
     mockConfigService = createStubInstance(ConfigService);
     mockErrorService = createStubInstance(ErrorService);
+  });
+
+  afterEach(() => {
+    sinon.restore();
   });
 
   it("should return true if a process is running", async () => {

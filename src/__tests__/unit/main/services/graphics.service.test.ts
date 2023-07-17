@@ -31,6 +31,7 @@ describe("Graphics service", () => {
 
   afterEach(() => {
     mockFs.restore();
+    sinon.restore();
   });
 
   describe("Validating graphics", () => {

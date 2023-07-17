@@ -22,6 +22,7 @@ describe("Profile service", () => {
 
   afterEach(() => {
     mockFs.restore();
+    sinon.restore();
   });
 
   it("should get if the user is showing hidden profiles", () => {

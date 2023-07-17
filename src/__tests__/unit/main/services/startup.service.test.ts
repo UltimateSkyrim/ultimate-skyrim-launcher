@@ -56,6 +56,7 @@ describe("Startup service", () => {
 
   after(() => {
     mock.stopAll();
+    sinon.restore();
   });
 
   it("should quit if a blacklisted process is running", async () => {

@@ -24,7 +24,10 @@ describe("Migration service", () => {
     mockConfigService = createStubInstance(ConfigService);
   });
 
-  afterEach(mockFs.restore);
+  afterEach(() => {
+    mockFs.restore();
+    sinon.restore();
+  });
 
   describe("Separating profile from graphics", () => {
     let mockModDirectory: string;
