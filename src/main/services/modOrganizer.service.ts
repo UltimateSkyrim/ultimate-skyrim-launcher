@@ -235,7 +235,7 @@ export class ModOrganizerService {
     this.logger.info("MO2 exited, starting post launch actions");
     await this.gameService.copySkyrimLaunchLogs();
     await this.restoreMO2Settings();
-    await this.enbService.syncENBFromGameToPresets(
+    await this.enbService.syncEnbFromGameToPresets(
       this.configService.getPreference(USER_PREFERENCE_KEYS.ENB_PROFILE)
     );
     await this.graphicsService.syncGraphicsFromGameToPresets(

@@ -10,12 +10,12 @@ export class EnbController {
 
   @handle(ENB_EVENTS.GET_ENB_PRESETS)
   getEnbPresets(): Promise<FriendlyDirectoryMap[]> {
-    return this.enbService.getENBPresets();
+    return this.enbService.getEnbPresets();
   }
 
   @handle(ENB_EVENTS.RESTORE_ENB_PRESETS)
   async restoreEnbPresets(): Promise<void> {
-    await this.enbService.restoreENBPresets();
+    await this.enbService.restoreEnbPresets();
   }
 
   @handle(ENB_EVENTS.GET_ENB_PREFERENCE)

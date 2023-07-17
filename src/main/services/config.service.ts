@@ -33,6 +33,8 @@ type PreferenceWithValidator = {
 export class ConfigService {
   constructor(
     @inject(LoggerBinding) private logger: Logger,
+    // Ignore the default because it is overridden for testing
+    /* istanbul ignore next */
     private readonly config = new Store<UserPreferences>({
       name: "userPreferences",
     })

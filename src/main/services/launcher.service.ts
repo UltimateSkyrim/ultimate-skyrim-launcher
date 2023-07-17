@@ -98,7 +98,7 @@ export class LauncherService {
   }
 
   async backupAssets() {
-    await this.enbService.backupOriginalENBs();
+    await this.enbService.backupOriginalEnbs();
     await this.profileService.backupOriginalProfiles();
     await this.graphicsService.backupOriginalGraphics();
   }
