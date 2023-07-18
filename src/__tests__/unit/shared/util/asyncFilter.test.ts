@@ -1,5 +1,5 @@
 import { expect } from "@loopback/testlab";
-import { asyncFilter } from "../../../../shared/util/asyncFilter";
+import { asyncFilter } from "@/shared/util/asyncFilter";
 
 describe("asyncFilter", () => {
   interface Person {
@@ -17,7 +17,7 @@ describe("asyncFilter", () => {
     { name: "Bob", age: 16 },
   ];
 
-  it("should filter adults", async () => {
+  it("should filter data when the filter matches", async () => {
     const filtered = await asyncFilter(people, filterAdults);
 
     expect(filtered).to.deepEqual([
@@ -26,7 +26,7 @@ describe("asyncFilter", () => {
     ]);
   });
 
-  it("should filter no adults", async () => {
+  it("should filter no data when the filter does not match", async () => {
     const filtered = await asyncFilter(
       people,
       async (person) => person.age >= 100
