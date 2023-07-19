@@ -45,7 +45,12 @@ export class LauncherApplication extends BootMixin(Application) {
       },
       services: {
         dirs: ["services"],
-        extensions: [".service.ts", ".service.js"],
+        extensions: [
+          ".service.ts",
+          ".service.js",
+          ".provider.ts",
+          ".provider.js",
+        ],
         nested: true,
       },
     };

@@ -8,7 +8,7 @@ import {
   sinon,
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
-import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
 
 const mockLocalAppData = "mock/local/app/data";
 
@@ -72,7 +72,10 @@ describe("Wabbajack service", () => {
 
     sinon.stub(SystemService, "getLocalAppData").returns(mockLocalAppData);
 
-    wabbajackService = new WabbajackService(mockModpackService, mockLogger());
+    wabbajackService = new WabbajackService(
+      mockModpackService,
+      getMockLogger()
+    );
   });
 
   afterEach(() => {

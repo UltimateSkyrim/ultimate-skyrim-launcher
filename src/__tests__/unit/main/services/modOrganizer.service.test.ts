@@ -14,7 +14,7 @@ import { ProfileService } from "@/main/services/profile.service";
 import { SystemService } from "@/main/services/system.service";
 import { GraphicsService } from "@/main/services/graphics.service";
 import mockFs from "mock-fs";
-import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
 import { MO2_NAMES } from "@/shared/enums/mo2";
 
 describe("ModOrganizer service", () => {
@@ -59,7 +59,7 @@ describe("ModOrganizer service", () => {
       mockProfileService,
       mockSystemService,
       mockGraphicsService,
-      mockLogger()
+      getMockLogger()
     );
 
     expect(await modOrganizerService.isRunning()).to.eql(true);
@@ -90,7 +90,7 @@ describe("ModOrganizer service", () => {
       mockProfileService,
       mockSystemService,
       mockGraphicsService,
-      mockLogger()
+      getMockLogger()
     );
 
     expect(await modOrganizerService.getFirstCustomExecutableTitle()).to.eql(

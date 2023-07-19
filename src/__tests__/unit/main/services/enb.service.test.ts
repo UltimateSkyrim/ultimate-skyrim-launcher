@@ -6,7 +6,7 @@ import {
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 import { InstructionService } from "@/main/services/instruction.service";
-import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
 import { EnbService } from "@/main/services/enb.service";
 import mockFs from "mock-fs";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
@@ -27,7 +27,7 @@ describe("ENB service", () => {
     enbService = new EnbService(
       mockConfigService,
       mockInstructionService,
-      mockLogger()
+      getMockLogger()
     );
   });
 

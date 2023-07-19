@@ -17,7 +17,7 @@ import { UpdateService } from "@/main/services/update.service";
 import { BlacklistService } from "@/main/services/blacklist.service";
 import { ErrorService } from "@/main/services/error.service";
 import { WindowService } from "@/main/services/window.service";
-import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
 
 describe("Startup service", () => {
   let mockModpackService: StubbedInstanceWithSinonAccessor<ModpackService>;
@@ -50,7 +50,7 @@ describe("Startup service", () => {
       mockBlacklistService,
       mockErrorService,
       mockWindowService,
-      mockLogger()
+      getMockLogger()
     );
   });
 

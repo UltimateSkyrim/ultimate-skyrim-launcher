@@ -9,7 +9,7 @@ import {
 import { ConfigService } from "@/main/services/config.service";
 import { ProfileService } from "@/main/services/profile.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import { mockLogger } from "@/__tests__/unit/main/support/mocks/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
 
 describe("Profile service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
@@ -17,7 +17,7 @@ describe("Profile service", () => {
 
   beforeEach(() => {
     mockConfigService = createStubInstance(ConfigService);
-    profileService = new ProfileService(mockConfigService, mockLogger());
+    profileService = new ProfileService(mockConfigService, getMockLogger());
   });
 
   afterEach(() => {

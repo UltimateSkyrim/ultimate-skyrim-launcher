@@ -1,4 +1,4 @@
-import { app, protocol } from "electron";
+import { app, dialog, protocol } from "electron";
 import { isDevelopment } from "./main/services/config.service";
 import { autoUpdater } from "electron-updater";
 import { LauncherApplication } from "./main/application";
@@ -68,7 +68,7 @@ app.on("ready", () => {
   start()
     .then(() => logger.debug("App started"))
     .catch((error) => {
-      const errorService = new ErrorService(logger);
+      const errorService = new ErrorService(logger, dialog);
       errorService.handleError(
         "Failed to start application",
         (error as Error).message
