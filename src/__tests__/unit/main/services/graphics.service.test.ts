@@ -11,7 +11,7 @@ import type { FriendlyDirectoryMap } from "@/shared/types/modpack-metadata";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { ProfileService } from "@/main/services/profile.service";
 import fs from "fs";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { NoGraphicsError } from "@/shared/errors/no-graphics.error";
 
 describe("Graphics service", () => {

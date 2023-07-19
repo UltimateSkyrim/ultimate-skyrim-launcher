@@ -14,7 +14,7 @@ import { ProfileService } from "@/main/services/profile.service";
 import { SystemService } from "@/main/services/system.service";
 import { GraphicsService } from "@/main/services/graphics.service";
 import mockFs from "mock-fs";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { MO2_NAMES } from "@/shared/enums/mo2";
 
 describe("ModOrganizer service", () => {

@@ -7,7 +7,6 @@ import fs from "fs";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";
 import { ProfileService } from "@/main/services/profile.service";
-import * as readline from "readline";
 import * as os from "os";
 import type { PathLike } from "fs-extra";
 import { WabbajackService } from "@/main/services/wabbajack.service";
@@ -125,11 +124,11 @@ export class InstructionService {
 
     for (const pluginsFile of await this.getPluginFiles()) {
       this.logger.debug(`Toggling plugin in ${pluginsFile}`);
-      const plugins = this.getPluginsFromFile(pluginsFile);
+      const plugins = await this.readLinesFromFile(pluginsFile);
 
       const editedFile = [];
       for await (let currentPlugin of plugins) {
-        if (currentPlugin.replace("*", "") === plugin) {
+        if (currentPlugin.replace("*", "").trim() === plugin) {
           if (state === "disable" && currentPlugin.startsWith("*")) {
             this.logger.debug(`Disabling plugin ${plugin}`);
             currentPlugin = currentPlugin.replace("*", "");
@@ -160,7 +159,7 @@ export class InstructionService {
 
     for (const modlistFile of await this.getModlistFiles()) {
       this.logger.debug(`Toggling mod in ${modlistFile}`);
-      const mods = this.getModsFromFile(modlistFile);
+      const mods = await this.readLinesFromFile(modlistFile);
 
       const editedFile = [];
       for await (let currentMod of mods) {
@@ -195,18 +194,10 @@ export class InstructionService {
     );
   }
 
-  getModsFromFile(modsFile: string) {
-    return readline.createInterface({
-      input: fs.createReadStream(modsFile),
-      crlfDelay: Infinity,
-    });
-  }
-
-  getPluginsFromFile(pluginsFile: PathLike) {
-    return readline.createInterface({
-      input: fs.createReadStream(pluginsFile),
-      crlfDelay: Infinity,
-    });
+  async readLinesFromFile(file: PathLike) {
+    return (await fs.promises.readFile(file, { encoding: "utf-8" })).split(
+      os.EOL
+    );
   }
 
   async getPluginFiles() {

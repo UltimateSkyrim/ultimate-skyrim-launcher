@@ -1,7 +1,7 @@
 import { ErrorService } from "@/main/services/error.service";
 import type { ElectronLog } from "electron-log";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
-import { getMockDialog } from "@/__tests__/unit/helpers/dialog.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
+import { getMockDialog } from "@/__tests__/unit/helpers/mocks/dialog.mock";
 import { sinon, StubbedInstanceWithSinonAccessor } from "@loopback/testlab";
 import type { Dialog } from "electron";
 

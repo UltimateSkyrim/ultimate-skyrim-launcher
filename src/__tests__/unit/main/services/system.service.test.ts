@@ -8,7 +8,7 @@ import {
 import { ConfigService } from "@/main/services/config.service";
 import { ErrorService } from "@/main/services/error.service";
 import type psList from "ps-list";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 
 describe("System service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;

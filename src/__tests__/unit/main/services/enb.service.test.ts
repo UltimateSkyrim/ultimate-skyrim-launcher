@@ -6,14 +6,18 @@ import {
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 import { InstructionService } from "@/main/services/instruction.service";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { EnbService } from "@/main/services/enb.service";
 import mockFs from "mock-fs";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { NoEnbsError } from "@/shared/errors/no-enbs.error";
-import type { AdditionalInstruction } from "@/shared/types/additional-instructions";
+import {
+  InstructionAction,
+  InstructionType,
+} from "@/shared/enums/additional-instructions";
 import fs from "fs";
 import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
+import type { AdditionalInstruction } from "@/shared/types/additional-instructions";
 
 describe("ENB service", () => {
   let enbService: EnbService;
@@ -233,8 +237,8 @@ describe("ENB service", () => {
   describe("postSetEnb", () => {
     it("should run the post actions for a given enb", async () => {
       const instruction: AdditionalInstruction = {
-        type: "enb",
-        action: "disable-plugin",
+        type: InstructionType.ENB,
+        action: InstructionAction.DISABLE_PLUGIN,
         plugin: "test",
         target: "test",
       };
@@ -252,8 +256,8 @@ describe("ENB service", () => {
       mockConfigService.stubs.getPreference.returns("test");
       mockInstructionService.stubs.getInstructions.returns([
         {
-          type: "resolution-ratio",
-          action: "disable-plugin",
+          type: InstructionType.RESOLUTION_RATIO,
+          action: InstructionAction.DISABLE_PLUGIN,
           target: "test",
           plugin: "test",
         },
@@ -901,8 +905,8 @@ describe("ENB service", () => {
       const skyrimDirectory = "mock-skyrim-directory";
       const enbPreset = "test1";
       const instruction: AdditionalInstruction = {
-        type: "enb",
-        action: "disable-plugin",
+        type: InstructionType.ENB,
+        action: InstructionAction.DISABLE_PLUGIN,
         plugin: "test",
         target: "test",
       };

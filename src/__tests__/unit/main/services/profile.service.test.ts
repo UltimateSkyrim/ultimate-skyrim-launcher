@@ -9,7 +9,7 @@ import {
 import { ConfigService } from "@/main/services/config.service";
 import { ProfileService } from "@/main/services/profile.service";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 
 describe("Profile service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;

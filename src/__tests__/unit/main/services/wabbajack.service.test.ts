@@ -8,7 +8,7 @@ import {
   sinon,
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 
 const mockLocalAppData = "mock/local/app/data";
 

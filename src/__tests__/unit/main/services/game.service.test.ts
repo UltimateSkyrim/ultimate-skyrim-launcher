@@ -8,7 +8,7 @@ import {
 import { GameService } from "@/main/services/game.service";
 import { ConfigService } from "@/main/services/config.service";
 import fs from "fs";
-import { getMockLogger } from "@/__tests__/unit/helpers/logger.mock";
+import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 
 describe("GameService", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;

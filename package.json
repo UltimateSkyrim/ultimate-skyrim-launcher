@@ -14,7 +14,7 @@
     "prebuild": "npm run compile",
     "build": "vue-cli-service electron:build",
     "lint": "npm run lint:typescript && npm run lint:eslint && npm run lint:styles && npm run lint:prettier",
-    "lint:fix": "npm run lint:eslint:fix && npm run lint:prettier:fix",
+    "lint:fix": "npm run lint:typescript && npm run lint:eslint:fix && npm run lint:prettier:fix",
     "electron:debug:main": "electron --remote-debugging-port=9223 ./dist_electron",
     "electron:debug:renderer": "npm run start -- --debug",
     "lint:eslint": "vue-cli-service lint",
