@@ -31,7 +31,7 @@ export class MigrationService {
       this.standardProfileName
     }`;
 
-    const potatoProfilePath = `${this.profileService.profileDirectory()}/${
+    const performanceProfilePath = `${this.profileService.profileDirectory()}/${
       this.performanceProfileName
     }`;
 
@@ -52,7 +52,7 @@ export class MigrationService {
       this.logger.debug("Creating new standard profile");
       await this.createNewProfiles(
         standardProfilePath,
-        potatoProfilePath,
+        performanceProfilePath,
         profiles
       );
 

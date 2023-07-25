@@ -11,6 +11,8 @@ import { ProfileService } from "@/main/services/profile.service";
 import fs from "fs";
 import { ConfigService } from "@/main/services/config.service";
 import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
+import type { DirectoryItems } from "mock-fs/lib/filesystem";
+import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
 
 describe("Migration service", () => {
   let migrationService: MigrationService;
@@ -36,6 +38,7 @@ describe("Migration service", () => {
     let mockGraphicsPresets: string;
     let mockBackupDirectory: string;
     let mockProfileBackup: string;
+    let mockFSBase: DirectoryItems;
 
     beforeEach(() => {
       mockModDirectory = "/mod/directory";
@@ -49,61 +52,64 @@ describe("Migration service", () => {
         { real: "mock-real", friendly: "mock friendly" },
         { real: "mock-real-2", friendly: "mock friendly 2" },
       ];
-      mockFs({
+
+      mockFSBase = {
         [mockLauncherDirectory]: {
           "namesMO2.json": JSON.stringify(mockProfiles),
         },
         [mockProfilesDirectory]: {
           potato: {
-            "modlist.txt": "",
-            "plugins.txt": "",
-            "Skyrim.ini": "",
-            "SkyrimPrefs.ini": "",
-            "SkyrimCustom.ini": "",
+            "modlist.txt": "potato",
+            "plugins.txt": "potato",
+            "Skyrim.ini": "potato",
+            "SkyrimPrefs.ini": "potato",
+            "SkyrimCustom.ini": "potato",
           },
           low: {
             "modlist.txt": "modified-modlist",
             "plugins.txt": "modified-plugins",
-            "Skyrim.ini": "",
-            "SkyrimPrefs.ini": "",
-            "SkyrimCustom.ini": "",
+            "Skyrim.ini": "low",
+            "SkyrimPrefs.ini": "low",
+            "SkyrimCustom.ini": "low",
           },
           high: {
-            "modlist.txt": "",
-            "plugins.txt": "",
-            "Skyrim.ini": "",
-            "SkyrimPrefs.ini": "",
-            "SkyrimCustom.ini": "",
+            "modlist.txt": "high",
+            "plugins.txt": "high",
+            "Skyrim.ini": "high",
+            "SkyrimPrefs.ini": "high",
+            "SkyrimCustom.ini": "high",
           },
         },
         [mockProfileBackup]: {
-          potato: "potato-content",
-          low: "content",
+          potato: { "potato.ini": "potato" },
+          low: { "low.ini": "content" },
+          high: { "high.ini": "content" },
         },
         [`${mockLauncherDirectory}/backup/Graphics Presets`]: {
           potato: {
-            "modlist.txt": "",
-            "plugins.txt": "",
-            "Skyrim.ini": "",
-            "SkyrimPrefs.ini": "",
-            "SkyrimCustom.ini": "",
+            "modlist.txt": "potato",
+            "plugins.txt": "potato",
+            "Skyrim.ini": "potato",
+            "SkyrimPrefs.ini": "potato",
+            "SkyrimCustom.ini": "potato",
           },
           low: {
-            "modlist.txt": "",
-            "plugins.txt": "",
-            "Skyrim.ini": "",
-            "SkyrimPrefs.ini": "",
-            "SkyrimCustom.ini": "",
+            "modlist.txt": "low",
+            "plugins.txt": "low",
+            "Skyrim.ini": "low",
+            "SkyrimPrefs.ini": "low",
+            "SkyrimCustom.ini": "low",
           },
           high: {
-            "modlist.txt": "",
-            "plugins.txt": "",
-            "Skyrim.ini": "",
-            "SkyrimPrefs.ini": "",
-            "SkyrimCustom.ini": "",
+            "modlist.txt": "high",
+            "plugins.txt": "high",
+            "Skyrim.ini": "high",
+            "SkyrimPrefs.ini": "high",
+            "SkyrimCustom.ini": "high",
           },
         },
-      });
+      };
+      mockFs(mockFSBase);
 
       mockProfileService.stubs.getProfileDirectories.resolves([
         `${mockProfilesDirectory}/potato`,
@@ -239,6 +245,102 @@ describe("Migration service", () => {
         mockProfileService.stubs.setProfilePreference,
         "mock-real-profile"
       );
+    });
+
+    it("should create the performance profile from the backup if it exists", async () => {
+      mockGraphicsService.stubs.graphicsExist.resolves(false);
+      mockProfileService.stubs.getBackedUpProfileDirectories.resolves([
+        `${mockProfileBackup}/high`,
+        `${mockProfileBackup}/low`,
+        `${mockProfileBackup}/potato`,
+      ]);
+
+      mockConfigService.stubs.backupsExist.returns(true);
+
+      await migrationService.separateProfileFromGraphics();
+
+      expect(
+        await readFilesFromDirectory(
+          `${mockProfilesDirectory}/0_Wildlander-STANDARD`
+        )
+      ).to.containDeep({
+        "high.ini": "content",
+      });
+      expect(
+        await readFilesFromDirectory(
+          `${mockProfilesDirectory}/0_Wildlander-PERFORMANCE`
+        )
+      ).to.containDeep({
+        "potato.ini": "potato",
+      });
+    });
+
+    it("should should create the performance profile from a backup and use the first if there is no potato profile", async () => {
+      mockGraphicsService.stubs.graphicsExist.resolves(false);
+      mockProfileService.stubs.getBackedUpProfileDirectories.resolves([
+        `${mockProfileBackup}/high`,
+        `${mockProfileBackup}/low`,
+      ]);
+
+      mockProfileService.stubs.getProfileDirectories.resolves([
+        `${mockProfilesDirectory}/high`,
+        `${mockProfilesDirectory}/low`,
+      ]);
+
+      mockConfigService.stubs.backupsExist.returns(true);
+
+      await migrationService.separateProfileFromGraphics();
+
+      expect(
+        await readFilesFromDirectory(
+          `${mockProfilesDirectory}/0_Wildlander-PERFORMANCE`
+        )
+      ).to.containDeep({
+        "low.ini": "content",
+      });
+    });
+
+    it("should create the performance profile and use the first if there is no backups and no potato profile", async () => {
+      mockConfigService.stubs.backupsExist.returns(false);
+
+      mockProfileService.stubs.getProfileDirectories.resolves([
+        `${mockProfilesDirectory}/low`,
+        `${mockProfilesDirectory}/high`,
+      ]);
+
+      mockFs({
+        ...mockFSBase,
+        [mockProfilesDirectory]: {
+          low: {
+            "modlist.txt": "modified-modlist",
+            "plugins.txt": "modified-plugins",
+            "Skyrim.ini": "low",
+            "SkyrimPrefs.ini": "low",
+            "SkyrimCustom.ini": "low",
+          },
+          high: {
+            "modlist.txt": "high",
+            "plugins.txt": "high",
+            "Skyrim.ini": "high",
+            "SkyrimPrefs.ini": "high",
+            "SkyrimCustom.ini": "high",
+          },
+        },
+      });
+
+      await migrationService.separateProfileFromGraphics();
+
+      expect(
+        await readFilesFromDirectory(
+          `${mockProfilesDirectory}/0_Wildlander-PERFORMANCE`
+        )
+      ).to.containDeep({
+        "modlist.txt": "modified-modlist",
+        "plugins.txt": "modified-plugins",
+        "Skyrim.ini": "low",
+        "SkyrimPrefs.ini": "low",
+        "SkyrimCustom.ini": "low",
+      });
     });
   });
 });
