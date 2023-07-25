@@ -20,7 +20,7 @@ export interface UserPreferences {
   [USER_PREFERENCE_KEYS.CHECK_PREREQUISITES]: boolean;
 }
 
-type PreferenceWithValidator = {
+export type PreferenceWithValidator = {
   [key in keyof UserPreferences]?: {
     value: UserPreferences[keyof UserPreferences];
     validate?: (...args: unknown[]) => Promise<boolean>;

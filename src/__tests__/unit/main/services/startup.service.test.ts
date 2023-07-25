@@ -1,8 +1,3 @@
-import mock from "mock-require";
-// electron-is-dev throws an error if not running in electron
-mock("electron-is-dev", () => {
-  return true;
-});
 import { StartupService } from "@/main/services/startup.service";
 import {
   createStubInstance,
@@ -55,7 +50,6 @@ describe("Startup service", () => {
   });
 
   after(() => {
-    mock.stopAll();
     sinon.restore();
   });
 

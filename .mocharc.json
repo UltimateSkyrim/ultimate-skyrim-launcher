@@ -5,7 +5,8 @@
   "require": [
     "ts-node/register",
     "tsconfig-paths/register",
-    "source-map-support/register"
+    "source-map-support/register",
+    "src/__tests__/unit/helpers/setup.ts"
   ],
   "reporter": "spec",
   "extensions": ["ts"],

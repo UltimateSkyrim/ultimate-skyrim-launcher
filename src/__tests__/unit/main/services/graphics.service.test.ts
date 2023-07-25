@@ -13,6 +13,7 @@ import { ProfileService } from "@/main/services/profile.service";
 import fs from "fs";
 import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { NoGraphicsError } from "@/shared/errors/no-graphics.error";
+import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
 
 describe("Graphics service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
@@ -351,6 +352,7 @@ describe("Graphics service", () => {
           "Skyrim.ini": "mock original content",
           "SkyrimCustom.ini": "mock original content",
           "SkyrimPrefs.ini": "mock original content",
+          "ultraOnly.ini": "mock original content",
         },
         [`${mockProfileDirectory}/profile-test`]: {
           "Skyrim.ini": "mock original content",
@@ -376,20 +378,19 @@ describe("Graphics service", () => {
       );
 
       // Check the settings are correctly copied back to the preset
-      expect(
-        await fs.promises.readFile(
-          `${mockGraphicsPresets}/ultra/SkyrimPrefs.ini`,
-          "utf-8"
-        )
-      ).to.eql("modified content");
-
-      // Ensure other profiles aren't changed
-      expect(
-        await fs.promises.readFile(
-          `${mockGraphicsPresets}/low/SkyrimPrefs.ini`,
-          "utf-8"
-        )
-      ).to.eql("mock original content");
+      expect(await readFilesFromDirectory(mockGraphicsPresets)).to.eql({
+        low: {
+          "Skyrim.ini": "mock original content",
+          "SkyrimCustom.ini": "mock original content",
+          "SkyrimPrefs.ini": "mock original content",
+        },
+        ultra: {
+          "Skyrim.ini": "mock original content",
+          "SkyrimCustom.ini": "mock original content",
+          "SkyrimPrefs.ini": "modified content",
+          "ultraOnly.ini": "mock original content",
+        },
+      });
     });
   });
 });

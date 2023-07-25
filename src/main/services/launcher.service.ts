@@ -6,12 +6,12 @@ import { ConfigService } from "@/main/services/config.service";
 import { ResolutionService } from "@/main/services/resolution.service";
 import { ModpackService } from "@/main/services/modpack.service";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import { app } from "electron";
 import { ErrorService } from "@/main/services/error.service";
 import { WindowService } from "@/main/services/window.service";
 import { GraphicsService } from "@/main/services/graphics.service";
 import { MigrationService } from "@/main/services/migration.service";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { versionBinding } from "@/main/bindings/version";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -27,7 +27,8 @@ export class LauncherService {
     @service(WindowService) private windowService: WindowService,
     @service(GraphicsService) private graphicsService: GraphicsService,
     @service(MigrationService) private migrationService: MigrationService,
-    @inject(LoggerBinding) private logger: Logger
+    @inject(LoggerBinding) private logger: Logger,
+    @inject(versionBinding) private version: string
   ) {}
 
   async refreshModpack() {
@@ -104,7 +105,7 @@ export class LauncherService {
   }
 
   getVersion() {
-    return app.getVersion();
+    return this.version;
   }
 
   setCheckPrerequisites(value: boolean) {

@@ -7,6 +7,8 @@ import { Application } from "@loopback/core";
 import type { Controller } from "@/main/decorators/controller.decorator";
 import { ErrorService } from "@/main/services/error.service";
 import logger from "electron-log";
+import { versionBinding } from "@/main/bindings/version";
+import { app } from "electron";
 
 const serviceNamespace = "services";
 
@@ -36,6 +38,8 @@ export class LauncherApplication extends BootMixin(Application) {
         process.exit(1);
       }
     });
+
+    this.bind(versionBinding).to(app.getVersion());
 
     this.bootOptions = {
       controllers: {
