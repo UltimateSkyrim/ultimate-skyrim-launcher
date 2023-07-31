@@ -7,8 +7,13 @@ import { Application } from "@loopback/core";
 import type { Controller } from "@/main/decorators/controller.decorator";
 import { ErrorService } from "@/main/services/error.service";
 import logger from "electron-log";
-import { versionBinding } from "@/main/bindings/version";
+import { VersionBinding } from "@/main/bindings/version.binding";
 import { app } from "electron";
+import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
+import { childProcessBinding } from "@/main/bindings/child-process.binding";
+import * as child_process from "child_process";
+import { psListBinding } from "@/main/bindings/psList.binding";
+import psList from "ps-list";
 
 const serviceNamespace = "services";
 
@@ -39,7 +44,7 @@ export class LauncherApplication extends BootMixin(Application) {
       }
     });
 
-    this.bind(versionBinding).to(app.getVersion());
+    this.bindStaticValues();
 
     this.bootOptions = {
       controllers: {
@@ -86,5 +91,12 @@ export class LauncherApplication extends BootMixin(Application) {
 
   private bindLogger() {
     this.bind(LoggerBinding).to(logger.create("launcher"));
+  }
+
+  private bindStaticValues() {
+    this.bind(VersionBinding).to(app.getVersion());
+    this.bind(IsDevelopmentBinding).to(!app.isPackaged);
+    this.bind(childProcessBinding).to(child_process);
+    this.bind(psListBinding).to(psList);
   }
 }

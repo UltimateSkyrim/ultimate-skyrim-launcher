@@ -1,7 +1,6 @@
 import { autoUpdater } from "electron-updater";
 import { app } from "electron";
 import path from "path";
-import { isDevelopment } from "@/main/services/config.service";
 import fs from "fs";
 import { service } from "@loopback/core";
 import { WindowService } from "@/main/services/window.service";
@@ -9,6 +8,7 @@ import { BindingScope, inject, injectable } from "@loopback/context";
 import { UPDATE_EVENTS } from "@/main/controllers/update/update.events";
 import { ErrorService } from "@/main/services/error.service";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -23,7 +23,8 @@ export class UpdateService {
     @service(WindowService) private renderService: WindowService,
     @service(ErrorService) private errorService: ErrorService,
     @service(WindowService) private windowService: WindowService,
-    @inject(LoggerBinding) private logger: Logger
+    @inject(LoggerBinding) private logger: Logger,
+    @inject(IsDevelopmentBinding) private isDevelopment: boolean
   ) {}
 
   async update() {
@@ -53,11 +54,11 @@ export class UpdateService {
   shouldUpdate() {
     let shouldUpdate;
 
-    if (isDevelopment && fs.existsSync(this.devAppUpdatePath)) {
+    if (this.isDevelopment && fs.existsSync(this.devAppUpdatePath)) {
       this.logger.debug(`Setting auto update path to ${this.devAppUpdatePath}`);
       autoUpdater.updateConfigPath = this.devAppUpdatePath;
       shouldUpdate = true;
-    } else if (isDevelopment) {
+    } else if (this.isDevelopment) {
       this.logger.debug(
         "Skipping app update check because we're in development mode"
       );

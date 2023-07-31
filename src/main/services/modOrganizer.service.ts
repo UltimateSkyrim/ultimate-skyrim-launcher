@@ -1,8 +1,5 @@
 import path from "path";
-import childProcess from "child_process";
-import { ConfigService, isDevelopment } from "@/main/services/config.service";
-import psList from "ps-list";
-import { dialog } from "electron";
+import { ConfigService } from "@/main/services/config.service";
 import fs from "fs";
 import { IIniObject, IIniObjectSection, parse, stringify } from "js-ini";
 import { promisify } from "util";
@@ -19,6 +16,15 @@ import { GraphicsService } from "@/main/services/graphics.service";
 import type { ModOrganizerIni } from "@/shared/types/ModOrganizer.ini";
 import { Logger, LoggerBinding } from "@/main/logger";
 import { MO2_NAMES } from "@/shared/enums/mo2";
+import type { ProcessDescriptor } from "ps-list";
+import { Dialog, DialogProvider } from "@/main/services/dialog.service";
+import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
+import {
+  ChildProcess,
+  childProcessBinding,
+} from "@/main/bindings/child-process.binding";
+import type { PSList } from "@/main/bindings/psList.binding";
+import { psListBinding } from "@/main/bindings/psList.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -35,10 +41,14 @@ export class ModOrganizerService {
     @service(ProfileService) private profileService: ProfileService,
     @service(SystemService) private systemService: SystemService,
     @service(GraphicsService) private graphicsService: GraphicsService,
-    @inject(LoggerBinding) private logger: Logger
+    @service(DialogProvider) private dialog: Dialog,
+    @inject(psListBinding) private psList: PSList,
+    @inject(childProcessBinding) private childProcess: ChildProcess,
+    @inject(LoggerBinding) private logger: Logger,
+    @inject(IsDevelopmentBinding) private isDevelopment: boolean
   ) {}
 
-  private static filterMO2(process: psList.ProcessDescriptor) {
+  private static filterMO2(process: ProcessDescriptor) {
     return process.name === MO2_NAMES.MO2EXE;
   }
 
@@ -48,7 +58,7 @@ export class ModOrganizerService {
 
   async closeMO2() {
     this.logger.info("Killing MO2 forcefully");
-    (await psList())
+    (await this.psList())
       .filter(ModOrganizerService.filterMO2)
       .forEach((mo2Instance) => {
         this.logger.debug(
@@ -63,7 +73,7 @@ export class ModOrganizerService {
     this.logger.info(
       "MO2 already running. Giving user option to cancel or continue"
     );
-    const buttonSelectionIndex = await dialog.showMessageBox({
+    const buttonSelectionIndex = await this.dialog.showMessageBox({
       title: "Mod Organizer running",
       message:
         "Mod Organizer 2 is already running. This could launch the wrong mod list. Would you like to close it first?",
@@ -178,10 +188,11 @@ export class ModOrganizerService {
         this.configService.getPreference(USER_PREFERENCE_KEYS.MOD_DIRECTORY),
         MO2_NAMES.MO2EXE
       );
-      const { stdout, stderr } = await promisify(childProcess.exec)(
+
+      const { stdout, stderr } = await promisify(this.childProcess.exec)(
         `"${MO2Path}"`
       );
-      if (isDevelopment) {
+      if (this.isDevelopment) {
         this.logger.debug(`MO2 stdout: ${stdout}`);
       }
       if (stderr) {
@@ -207,27 +218,29 @@ export class ModOrganizerService {
       this.logger.info("Launching game");
 
       const MO2Path = path.join(
-        this.configService.getPreference(USER_PREFERENCE_KEYS.MOD_DIRECTORY),
+        this.configService.modDirectory(),
         MO2_NAMES.MO2EXE
       );
-      const profile = this.configService.getPreference(
-        USER_PREFERENCE_KEYS.PRESET
-      );
+      const profile = await this.profileService.getProfilePreference();
 
       const mo2Command = `"${MO2Path}" -p "${profile}" "moshortcut://:${await this.getFirstCustomExecutableTitle()}"`;
       this.logger.debug(`Executing MO2 command: ${mo2Command}`);
 
-      const { stdout, stderr } = await promisify(childProcess.exec)(mo2Command);
-      if (isDevelopment) {
+      const { stdout, stderr } = await promisify(this.childProcess.exec)(
+        mo2Command
+      );
+      if (this.isDevelopment) {
         this.logger.debug(`MO2 stdout: ${stdout}`);
       }
-      await this.postLaunch();
       if (stderr) {
-        this.errorService.handleError("Error launching game", `${stderr}`);
+        // noinspection ExceptionCaughtLocallyJS
+        throw new Error(stderr);
       }
+      await this.postLaunch();
     } catch (error) {
       await this.postLaunch();
       this.errorService.handleError("Error launching game", `${error}`);
+      throw error;
     }
   }
 

@@ -1,7 +1,7 @@
 import * as os from "os";
 import { promisify } from "util";
 import childProcess from "child_process";
-import { ConfigService, isDevelopment } from "@/main/services/config.service";
+import { ConfigService } from "@/main/services/config.service";
 import { IIniObjectSection, parse, stringify } from "js-ini";
 import fs from "fs";
 import { screen } from "electron";
@@ -12,6 +12,7 @@ import { service } from "@loopback/core";
 import { name as modpackName } from "@/shared/wildlander/modpack.json";
 import { InstructionService } from "@/main/services/instruction.service";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -24,11 +25,12 @@ export class ResolutionService {
     @service(ConfigService) private configService: ConfigService,
     @service(InstructionService)
     private instructionsService: InstructionService,
-    @inject(LoggerBinding) private logger: Logger
+    @inject(LoggerBinding) private logger: Logger,
+    @inject(IsDevelopmentBinding) private isDevelopment: boolean
   ) {}
 
   getResourcePath() {
-    return isDevelopment
+    return this.isDevelopment
       ? `${process.cwd()}/src/assets`
       : process.resourcesPath;
   }

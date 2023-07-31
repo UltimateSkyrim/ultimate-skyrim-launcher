@@ -1,5 +1,4 @@
 import { app, dialog, protocol } from "electron";
-import { isDevelopment } from "./main/services/config.service";
 import { autoUpdater } from "electron-updater";
 import { LauncherApplication } from "./main/application";
 import { ErrorService } from "./main/services/error.service";
@@ -26,7 +25,7 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 // Exit cleanly on request from parent process in development mode.
-if (isDevelopment) {
+if (!app.isPackaged) {
   if (process.platform === "win32") {
     process.on("message", (data) => {
       if (data === "graceful-exit") {

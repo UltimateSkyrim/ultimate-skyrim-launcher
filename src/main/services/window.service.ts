@@ -2,10 +2,11 @@ import { app, BrowserWindow, dialog, protocol } from "electron";
 import { URL } from "url";
 import { readFile } from "fs";
 import path from "path";
-import { appRoot, isDevelopment } from "@/main/services/config.service";
+import { appRoot } from "@/main/services/config.service";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import contextMenu from "electron-context-menu";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -13,7 +14,10 @@ import { Logger, LoggerBinding } from "@/main/logger";
 export class WindowService {
   private window!: BrowserWindow;
 
-  constructor(@inject(LoggerBinding) private logger: Logger) {}
+  constructor(
+    @inject(LoggerBinding) private logger: Logger,
+    @inject(IsDevelopmentBinding) private isDevelopment: boolean
+  ) {}
 
   getWindow() {
     return this.window;
@@ -99,7 +103,7 @@ export class WindowService {
    */
   async load(urlPath: string) {
     try {
-      if (isDevelopment) {
+      if (this.isDevelopment) {
         const url = new URL(`http://localhost:8080/#${urlPath}`).toString();
         await this.navigateInWindow(url);
         if (!process.env["IS_TEST"]) {

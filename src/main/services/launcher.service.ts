@@ -11,7 +11,7 @@ import { WindowService } from "@/main/services/window.service";
 import { GraphicsService } from "@/main/services/graphics.service";
 import { MigrationService } from "@/main/services/migration.service";
 import { Logger, LoggerBinding } from "@/main/logger";
-import { versionBinding } from "@/main/bindings/version";
+import { VersionBinding } from "@/main/bindings/version.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -28,7 +28,7 @@ export class LauncherService {
     @service(GraphicsService) private graphicsService: GraphicsService,
     @service(MigrationService) private migrationService: MigrationService,
     @inject(LoggerBinding) private logger: Logger,
-    @inject(versionBinding) private version: string
+    @inject(VersionBinding) private version: string
   ) {}
 
   async refreshModpack() {

@@ -7,8 +7,6 @@ import { Logger, LoggerBinding } from "@/main/logger";
 import fs from "fs";
 
 export const appRoot = path.resolve(`${__dirname}/../../`);
-export const isDevelopment = path.extname(appRoot) !== ".asar";
-
 export interface UserPreferences {
   [USER_PREFERENCE_KEYS.MOD_DIRECTORY]: string;
   [USER_PREFERENCE_KEYS.PRESET]: string;

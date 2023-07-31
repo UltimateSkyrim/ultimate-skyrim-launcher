@@ -1,17 +1,9 @@
-import type {
-  BrowserWindow,
-  CertificateTrustDialogOptions,
-  Dialog,
-  MessageBoxOptions,
-  MessageBoxReturnValue,
-  MessageBoxSyncOptions,
-  OpenDialogOptions,
-  OpenDialogReturnValue,
-  OpenDialogSyncOptions,
-  SaveDialogOptions,
-  SaveDialogReturnValue,
-} from "electron";
+import type { Dialog } from "electron";
 import { sinon, StubbedInstanceWithSinonAccessor } from "@loopback/testlab";
+import type {
+  OverloadParameters,
+  OverloadReturnType,
+} from "@/shared/types/overloads";
 
 /**
  * Electron's dialog doesn't exist in a testing environment.
@@ -20,34 +12,36 @@ import { sinon, StubbedInstanceWithSinonAccessor } from "@loopback/testlab";
 export const getMockDialog = (): StubbedInstanceWithSinonAccessor<Dialog> => {
   const mockDialog: Dialog = {
     showCertificateTrustDialog: sinon.stub<
-      | [BrowserWindow, CertificateTrustDialogOptions]
-      | [CertificateTrustDialogOptions],
-      Promise<void>
+      OverloadParameters<Dialog["showCertificateTrustDialog"]>,
+      OverloadReturnType<Dialog["showCertificateTrustDialog"]>
     >(),
-    showErrorBox: sinon.stub<[string, string], void>(),
+    showErrorBox: sinon.stub<
+      OverloadParameters<Dialog["showErrorBox"]>,
+      OverloadReturnType<Dialog["showErrorBox"]>
+    >(),
     showMessageBox: sinon.stub<
-      [BrowserWindow, MessageBoxOptions] | [MessageBoxOptions],
-      Promise<MessageBoxReturnValue>
+      OverloadParameters<Dialog["showMessageBox"]>,
+      OverloadReturnType<Dialog["showMessageBox"]>
     >(),
     showMessageBoxSync: sinon.stub<
-      [BrowserWindow, MessageBoxSyncOptions] | [MessageBoxSyncOptions],
-      number
+      OverloadParameters<Dialog["showMessageBoxSync"]>,
+      OverloadReturnType<Dialog["showMessageBoxSync"]>
     >(),
     showOpenDialog: sinon.stub<
-      [BrowserWindow, OpenDialogOptions] | [OpenDialogOptions],
-      Promise<OpenDialogReturnValue>
+      OverloadParameters<Dialog["showOpenDialog"]>,
+      OverloadReturnType<Dialog["showOpenDialog"]>
     >(),
     showOpenDialogSync: sinon.stub<
-      [BrowserWindow, OpenDialogSyncOptions] | [OpenDialogSyncOptions],
-      string[] | undefined
+      OverloadParameters<Dialog["showOpenDialogSync"]>,
+      OverloadReturnType<Dialog["showOpenDialogSync"]>
     >(),
     showSaveDialog: sinon.stub<
-      [BrowserWindow, SaveDialogOptions] | [SaveDialogOptions],
-      Promise<SaveDialogReturnValue>
+      OverloadParameters<Dialog["showSaveDialog"]>,
+      OverloadReturnType<Dialog["showSaveDialog"]>
     >(),
     showSaveDialogSync: sinon.stub<
-      [BrowserWindow, SaveDialogOptions] | [SaveDialogOptions],
-      string | undefined
+      OverloadParameters<Dialog["showSaveDialogSync"]>,
+      OverloadReturnType<Dialog["showSaveDialogSync"]>
     >(),
   };
 
