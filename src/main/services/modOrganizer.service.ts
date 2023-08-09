@@ -21,10 +21,10 @@ import { Dialog, DialogProvider } from "@/main/services/dialog.service";
 import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
 import {
   ChildProcess,
-  childProcessBinding,
+  ChildProcessBinding,
 } from "@/main/bindings/child-process.binding";
 import type { PSList } from "@/main/bindings/psList.binding";
-import { psListBinding } from "@/main/bindings/psList.binding";
+import { PsListBinding } from "@/main/bindings/psList.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -42,8 +42,8 @@ export class ModOrganizerService {
     @service(SystemService) private systemService: SystemService,
     @service(GraphicsService) private graphicsService: GraphicsService,
     @service(DialogProvider) private dialog: Dialog,
-    @inject(psListBinding) private psList: PSList,
-    @inject(childProcessBinding) private childProcess: ChildProcess,
+    @inject(PsListBinding) private psList: PSList,
+    @inject(ChildProcessBinding) private childProcess: ChildProcess,
     @inject(LoggerBinding) private logger: Logger,
     @inject(IsDevelopmentBinding) private isDevelopment: boolean
   ) {}
