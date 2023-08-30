@@ -1,8 +1,9 @@
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { service } from "@loopback/core";
-import { app } from "electron";
+import type Electron from "electron";
 import { ModpackService } from "@/main/services/modpack.service";
 import { LauncherService } from "@/main/services/launcher.service";
+import * as os from "os";
 import { platform, type, version } from "os";
 import { WabbajackService } from "@/main/services/wabbajack.service";
 import { ResolutionService } from "@/main/services/resolution.service";
@@ -11,6 +12,7 @@ import { BlacklistService } from "@/main/services/blacklist.service";
 import { ErrorService } from "@/main/services/error.service";
 import { WindowService } from "@/main/services/window.service";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { ElectronBinding } from "@/main/bindings/electron.binding";
 
 interface StartupCommand {
   // Only needed if the command is being filtered
@@ -19,6 +21,14 @@ interface StartupCommand {
   execute: () => unknown;
   // Only run certain startup if the modpack is set
   requiresModpack?: boolean;
+}
+
+export const enum COMMAND_IDS {
+  STARTUP_LOGS = "STARTUP_LOGS",
+  PROCESS_BLACKLIST = "PROCESS_BLACKLIST",
+  CHECK_MODPACK_PATH = "CHECK_MODPACK_PATH",
+  UPDATE = "UPDATE",
+  REFRESH_MODPACK = "REFRESH_MODPACK",
 }
 
 @injectable({
@@ -36,32 +46,38 @@ export class StartupService {
     @service(BlacklistService) private blacklistService: BlacklistService,
     @service(ErrorService) private errorService: ErrorService,
     @service(WindowService) private windowService: WindowService,
+    @inject(ElectronBinding) private electron: typeof Electron,
     @inject(LoggerBinding) private logger: Logger
   ) {}
 
-  public registerStartupCommands(filter?: string) {
+  public registerStartupCommands(filter?: COMMAND_IDS) {
     this.startupCommands = [
       {
+        id: COMMAND_IDS.STARTUP_LOGS,
         name: "Startup logs",
         execute: async () => {
-          this.logger.debug(`
-            --- Startup debug logs ---
-            OS: ${type()} ${platform()} ${version()}
-            Modpack version: ${await this.wabbajackService.getModpackVersion()}
-            Launcher version: ${app.getVersion()} 
-            Modpack path: ${this.modpackService.getModpackDirectory()}
-            Current screen resolution: ${JSON.stringify(
-              this.resolutionService.getCurrentResolution()
-            )}
-          `);
+          this.logger.debug(
+            [
+              "--- Startup debug logs ---",
+              `OS: ${type()} ${platform()} ${version()}`,
+              `Modpack version: ${await this.wabbajackService.getModpackVersion()}`,
+              `Launcher version: ${this.electron.app.getVersion()}`,
+              `Modpack path: ${this.modpackService.getModpackDirectory()}`,
+              `Current screen resolution: ${JSON.stringify(
+                this.resolutionService.getCurrentResolution()
+              )}`,
+              "--- End startup debug logs ---",
+            ].join(os.EOL)
+          );
         },
       },
       {
+        id: COMMAND_IDS.UPDATE,
         name: "Auto update",
         execute: async () => this.updateService.update(),
       },
       {
-        id: "processBlacklist",
+        id: COMMAND_IDS.PROCESS_BLACKLIST,
         name: "Check if blacklisted process is running",
         execute: async () => {
           const runningBlacklistedProcesses =
@@ -85,6 +101,7 @@ export class StartupService {
         },
       },
       {
+        id: COMMAND_IDS.CHECK_MODPACK_PATH,
         name: "Check for invalid modpack preference",
         execute: () => {
           if (!this.modpackService.checkCurrentModpackPathIsValid()) {
@@ -98,7 +115,8 @@ export class StartupService {
         requiresModpack: true,
       },
       {
-        name: "Select modpack",
+        id: COMMAND_IDS.REFRESH_MODPACK,
+        name: "Refresh modpack selection",
         execute: () => this.launcherService.refreshModpack(),
         requiresModpack: true,
       },
@@ -109,6 +127,10 @@ export class StartupService {
         ({ id }) => id === filter
       );
     }
+  }
+
+  public getStartupCommands() {
+    return this.startupCommands;
   }
 
   public async runStartup() {
