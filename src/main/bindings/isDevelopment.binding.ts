@@ -1,3 +1,5 @@
 import { BindingKey } from "@loopback/core";
 
-export const IsDevelopmentBinding = BindingKey.create<boolean>("isDevelopment");
+export const IsDevelopmentBinding = BindingKey.create<boolean>(
+  "bindings.isDevelopment"
+);

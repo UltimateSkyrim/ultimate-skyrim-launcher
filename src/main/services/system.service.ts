@@ -1,20 +1,22 @@
 import path from "path";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import { app, shell } from "electron";
 import fs, { createWriteStream } from "fs";
 import { service } from "@loopback/core";
 import { ConfigService } from "@/main/services/config.service";
 import { ErrorService } from "@/main/services/error.service";
-import log from "electron-log";
 import { pipeline } from "stream/promises";
 import fetch from "node-fetch";
 import { promisify } from "util";
-import childProcess from "child_process";
 import { reboot } from "electron-shutdown-command";
 import { getAllInstalledSoftware } from "fetch-installed-software";
-import psList from "ps-list";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { Logger, LoggerBinding } from "@/main/logger";
+import { ElectronBinding } from "@/main/bindings/electron.binding";
+import {
+  ChildProcess,
+  ChildProcessBinding,
+} from "@/main/bindings/child-process.binding";
+import { type PSList, PsListBinding } from "@/main/bindings/psList.binding";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -24,15 +26,19 @@ export class SystemService {
     @service(ConfigService) private configService: ConfigService,
     @service(ErrorService) private errorService: ErrorService,
     @inject(LoggerBinding) private logger: Logger,
-    private listProcesses = psList
+    @inject(ElectronBinding) private electron: typeof Electron,
+    @inject(ChildProcessBinding) private childProcess: ChildProcess,
+    @inject(PsListBinding) private psList: PSList
   ) {}
 
   static getLocalAppData() {
     return path.resolve(`${process.env["APPDATA"]}/../local`);
   }
 
-  private static getInstallerFile() {
-    return path.normalize(`${app.getPath("userData")}/vc_redist.x64.exe`);
+  public getCPlusPlusInstallerFile() {
+    return path.normalize(
+      `${this.electron.app.getPath("userData")}/vc_redist.x64.exe`
+    );
   }
 
   reboot() {
@@ -41,8 +47,8 @@ export class SystemService {
   }
 
   async openApplicationLogsPath() {
-    const error = await shell.openPath(
-      path.parse(log.transports?.file.getFile().path).dir
+    const error = await this.electron.shell.openPath(
+      path.parse(this.logger.transports?.file.getFile().path).dir
     );
     if (error) {
       this.logger.error(error);
@@ -56,7 +62,7 @@ export class SystemService {
     );
 
     if (fs.existsSync(logPath)) {
-      const error = await shell.openPath(logPath);
+      const error = await this.electron.shell.openPath(logPath);
       if (error) {
         this.logger.error(error);
       }
@@ -75,14 +81,11 @@ export class SystemService {
     the renderer logs have to be manually cleared here.
     Because even if the entire logging object is exposed to the renderer it is unable to clear the file.
     */
-    const loggerPath =
-      this.logger.transports?.file.getFile().path.split("\\") || [];
-    // replace main.log with renderer.log
-    loggerPath.pop();
-    loggerPath.push("renderer.log");
+    const logFilePath = this.logger.transports?.file.getFile().path;
+    const loggerDir = path.dirname(logFilePath);
+    const renderLog = path.join(loggerDir, "renderer.log");
 
     //clear renderer.log
-    const renderLog = loggerPath.join("\\");
     if (fs.existsSync(renderLog)) {
       await fs.promises.writeFile(renderLog, "", { flag: "w" });
     }
@@ -125,9 +128,9 @@ export class SystemService {
   async installPrerequisites() {
     await this.downloadPrerequisites();
     this.logger.debug("Downloads completed");
-    this.logger.debug(`Installing ${SystemService.getInstallerFile()}`);
-    return promisify(childProcess.exec)(
-      `"${SystemService.getInstallerFile()}"`
+    this.logger.debug(`Installing ${this.getCPlusPlusInstallerFile()}`);
+    return promisify(this.childProcess.exec)(
+      `"${this.getCPlusPlusInstallerFile()}"`
     );
   }
 
@@ -135,7 +138,7 @@ export class SystemService {
     this.logger.debug("Downloading prerequisites");
     await this.downloadFile(
       "https://aka.ms/vs/17/release/vc_redist.x64.exe",
-      SystemService.getInstallerFile()
+      this.getCPlusPlusInstallerFile()
     );
   }
 
@@ -147,19 +150,24 @@ export class SystemService {
 
     this.logger.debug(`Downloading from ${url} to ${output}`);
 
-    const body = (await fetch(url)).body;
-    if (body) {
-      this.logger.debug(`Download complete, writing to ${output}`);
-      await pipeline(body, createWriteStream(output));
-      this.logger.debug(`Finished writing to ${output}`);
-    } else {
-      this.logger.error(`Failed to download file from ${url}`);
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      const message = `Failed to download file from ${url} with response status ${response.status}`;
+      this.logger.error(message);
+      throw new Error(message);
     }
+
+    const body = response.body;
+
+    this.logger.debug(`Download complete, writing to ${output}`);
+    await pipeline(body, createWriteStream(output));
+    this.logger.debug(`Finished writing to ${output}`);
   }
 
   async isProcessRunning(process: string): Promise<boolean> {
     return (
-      (await this.listProcesses()).filter(
+      (await this.psList()).filter(
         ({ name }) => name.toLowerCase() === process.toLowerCase()
       ).length > 0
     );
