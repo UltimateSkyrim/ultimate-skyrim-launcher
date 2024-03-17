@@ -9,6 +9,7 @@ import {
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
+import type { Modpack } from "@/shared/types/modpack-metadata";
 
 const mockLocalAppData = "mock/local/app/data";
 
@@ -79,8 +80,8 @@ describe("Wabbajack service", () => {
   });
 
   afterEach(() => {
-    sinon.restore();
     mockFs.restore();
+    sinon.restore();
   });
 
   describe("getInstalledModpacks", () => {
@@ -238,6 +239,161 @@ describe("Wabbajack service", () => {
           lastUpdated: mockDate,
         },
       });
+    });
+
+    it("should return null for the title and version if they are unknown", async () => {
+      mockFs({
+        [`${mockLocalAppData}/Wabbajack/saved_settings`]: {
+          "install-settings-asdfghj.json": mockFs.file({
+            content: JSON.stringify({
+              InstallLocation: "mock/install/location/1",
+              Metadata: {},
+            }),
+            mtime: mockDate,
+          }),
+        },
+      });
+
+      expect(
+        await wabbajackService.getInstalledModpacksFromWabbajackV3()
+      ).to.eql({
+        ["mock/install/location/1"]: {
+          title: null,
+          installPath: "mock/install/location/1",
+          version: null,
+          lastUpdated: mockDate,
+        },
+      });
+    });
+  });
+
+  describe("getInstalledCurrentModpackPaths", () => {
+    it("should get the installed current modpack paths", async () => {
+      mockModpackService.stubs.getModpackMetadata.returns({
+        name: "Wildlander",
+      } as unknown as Modpack);
+
+      sinon.stub(wabbajackService, "getInstalledModpacks").resolves({
+        "mock/install/location/1": {
+          title: "Wildlander",
+          installPath: "mock/install/location/1",
+          version: "1.1.9",
+        },
+        "mock/install/location/2": {
+          title: "Wildlander",
+          installPath: "mock/install/location/2",
+          version: "1.1.10",
+        },
+        "mock/install/location/3": {
+          title: "Another modpack",
+          installPath: "mock/install/location/3",
+          version: "1.1.9",
+        },
+      });
+
+      expect(await wabbajackService.getInstalledCurrentModpackPaths()).to.eql([
+        "mock/install/location/1",
+        "mock/install/location/2",
+      ]);
+    });
+
+    it("should return an empty array if there are no modpacks", async () => {
+      mockModpackService.stubs.getModpackMetadata.returns({
+        name: "Wildlander",
+      } as unknown as Modpack);
+
+      sinon.stub(wabbajackService, "getInstalledModpacks").resolves(null);
+
+      expect(await wabbajackService.getInstalledCurrentModpackPaths()).to.eql(
+        []
+      );
+    });
+  });
+
+  describe("getModpackMetadata", () => {
+    it("should get the modpack metadata", async () => {
+      sinon.stub(wabbajackService, "getInstalledModpacks").resolves({
+        mockModpack: {
+          title: "mock",
+          version: "1234",
+          installPath: "mock",
+          lastUpdated: new Date("01-01-2024"),
+        },
+      });
+
+      expect(await wabbajackService.getModpackMetadata("mockModpack")).to.eql({
+        title: "mock",
+        version: "1234",
+        installPath: "mock",
+        lastUpdated: new Date("01-01-2024"),
+      });
+    });
+
+    it("should return null if the modpack is not installed", async () => {
+      sinon.stub(wabbajackService, "getInstalledModpacks").resolves(null);
+
+      expect(await wabbajackService.getModpackMetadata("mockModpack")).to.eql(
+        null
+      );
+    });
+
+    it("should return null if the modpack is not found", async () => {
+      sinon.stub(wabbajackService, "getInstalledModpacks").resolves({
+        mockModpack: {
+          title: "mock",
+          version: "1234",
+          installPath: "mock",
+          lastUpdated: new Date(),
+        },
+      });
+
+      expect(
+        await wabbajackService.getModpackMetadata("anotherModpack")
+      ).to.eql(null);
+    });
+  });
+
+  describe("getCurrentModpackMetadata", () => {
+    it("should get the current modpack metadata", async () => {
+      mockModpackService.stubs.getModpackDirectory.returns("mockModpack");
+
+      sinon.stub(wabbajackService, "getModpackMetadata").resolves({
+        title: "mock",
+        version: "1234",
+        installPath: "mock",
+        lastUpdated: new Date("01-01-2024"),
+      });
+
+      expect(await wabbajackService.getCurrentModpackMetadata()).to.eql({
+        title: "mock",
+        version: "1234",
+        installPath: "mock",
+        lastUpdated: new Date("01-01-2024"),
+      });
+    });
+  });
+
+  describe("getModpackVersion", () => {
+    it("should get the modpack version", async () => {
+      sinon.stub(wabbajackService, "getCurrentModpackMetadata").resolves({
+        title: "mock",
+        version: "1234",
+        installPath: "mock",
+        lastUpdated: new Date(),
+      });
+
+      expect(await wabbajackService.getModpackVersion()).to.eql("1234");
+    });
+
+    it("should return unknown if the modpack version is unknown", async () => {
+      sinon.stub(wabbajackService, "getCurrentModpackMetadata").resolves({
+        title: "mock",
+        version: null,
+        installPath: "mock",
+        lastUpdated: new Date(),
+      });
+
+      expect(await wabbajackService.getModpackVersion()).to.eql("unknown");
     });
   });
 });
