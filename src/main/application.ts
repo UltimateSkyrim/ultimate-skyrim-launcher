@@ -15,6 +15,8 @@ import * as child_process from "child_process";
 import { PsListBinding } from "@/main/bindings/psList.binding";
 import psList from "ps-list";
 import { ElectronBinding } from "@/main/bindings/electron.binding";
+import { AutoUpdaterBinding } from "@/main/bindings/autoUpdater.binding";
+import { autoUpdater } from "electron-updater";
 
 const serviceNamespace = "services";
 
@@ -100,5 +102,6 @@ export class LauncherApplication extends BootMixin(Application) {
     this.bind(IsDevelopmentBinding).to(!app.isPackaged);
     this.bind(ChildProcessBinding).to(child_process);
     this.bind(PsListBinding).to(psList);
+    this.bind(AutoUpdaterBinding).to(autoUpdater);
   }
 }

@@ -45,7 +45,8 @@ export const getMockDialog = (): StubbedInstanceWithSinonAccessor<Dialog> => {
     >(),
   };
 
-  return Object.assign(mockDialog as Dialog, {
+  return {
+    ...mockDialog,
     stubs: mockDialog as sinon.SinonStubbedInstance<Dialog>,
-  });
+  };
 };

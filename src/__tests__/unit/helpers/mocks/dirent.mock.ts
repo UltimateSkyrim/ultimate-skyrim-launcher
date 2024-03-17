@@ -1,5 +1,8 @@
+/* istanbul ignore file */
+
 import type { Dirent } from "fs-extra";
 
+// TODO could all these methods be a sinon.stub instead and remove the ignore line?
 export const mockDirent: Omit<Dirent, "name"> = {
   isFile() {
     return true;
