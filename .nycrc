@@ -1,7 +1,7 @@
 {
   "extends": "@istanbuljs/nyc-config-typescript",
   "include": ["src"],
-  "exclude": ["src/__tests__/**/*.test.ts",  "**/*.d.ts", "**/*.eslintrc.js"],
+  "exclude": ["src/__tests__/**",  "**/*.d.ts", "**/*.eslintrc.js"],
   "extension": [".js", ".ts"],
   "reporter": ["text", "html"],
   "exclude-after-remap": false,
