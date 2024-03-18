@@ -1,0 +1,22 @@
+version: "3"
+services:
+
+  # Run a Windows installation to test the launcher
+  windows:
+    image: dockurr/windows
+    container_name: windows
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006
+      - 3389:3389/tcp
+      - 3389:3389/udp
+    stop_grace_period: 2m
+    restart: on-failure
+    volumes:
+      - ./.windows-data:/storage
+    environment:
+      KVM: "N"
+      #      CONSOLE: "Y"
+      #      BOOT_MODE: "windows_plain"
+      RAM_SIZE: "8G"

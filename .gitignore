@@ -30,3 +30,4 @@ dev-app-update.yml
 local
 mock-modpack-install
 mock-files
+.windows-data
