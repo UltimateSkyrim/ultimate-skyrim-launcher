@@ -1,12 +1,19 @@
-import { app, BrowserWindow, dialog, protocol } from "electron";
+import type Electron from "electron";
+import { BrowserWindow, protocol } from "electron";
 import { URL } from "url";
 import { readFile } from "fs";
 import path from "path";
 import { appRoot } from "@/main/services/config.service";
 import { BindingScope, inject, injectable } from "@loopback/context";
-import contextMenu from "electron-context-menu";
 import { Logger, LoggerBinding } from "@/main/logger";
 import { IsDevelopmentBinding } from "@/main/bindings/isDevelopment.binding";
+import { ElectronBinding } from "@/main/bindings/electron.binding";
+import {
+  ContextMenu,
+  ContextMenuBinding,
+} from "@/main/bindings/context-menu.binding";
+import { service } from "@loopback/core";
+import { Dialog, DialogProvider } from "@/main/services/dialog.service";
 
 @injectable({
   scope: BindingScope.SINGLETON,
@@ -16,9 +23,15 @@ export class WindowService {
 
   constructor(
     @inject(LoggerBinding) private logger: Logger,
-    @inject(IsDevelopmentBinding) private isDevelopment: boolean
+    @inject(IsDevelopmentBinding) private isDevelopment: boolean,
+    @inject(ElectronBinding) private electron: typeof Electron,
+    @inject(ContextMenuBinding) private contextMenu: ContextMenu,
+    @service(DialogProvider) private dialog: Dialog
   ) {}
 
+  setWindow(window: BrowserWindow) {
+    this.window = window;
+  }
   getWindow() {
     return this.window;
   }
@@ -29,7 +42,7 @@ export class WindowService {
 
   quit() {
     this.logger.debug("Quit application");
-    app.quit();
+    this.electron.app.quit();
   }
 
   reload() {
@@ -60,12 +73,12 @@ export class WindowService {
 
     try {
       // Add default context menu
-      contextMenu({
+      this.contextMenu({
         showSaveImageAs: true,
       });
 
       // Create the browser window.
-      this.window = new BrowserWindow({
+      this.window = new this.electron.BrowserWindow({
         frame: false,
         height: 580,
         minHeight: 580,
@@ -98,7 +111,6 @@ export class WindowService {
   }
 
   /**
-   *
    * @param urlPath - Must start with a '/'
    */
   async load(urlPath: string) {
@@ -133,7 +145,7 @@ export class WindowService {
   private handleFatalError(message: string, err: string | Error) {
     this.logger.error(`${message}. ${err}`);
 
-    dialog.showMessageBoxSync({
+    this.dialog.showMessageBoxSync({
       type: "error",
       title: "A fatal error occurred!",
       message: `
@@ -142,10 +154,10 @@ export class WindowService {
     `,
     });
 
-    app.quit();
+    this.electron.app.quit();
   }
 
-  private async navigateInWindow(url: string) {
+  async navigateInWindow(url: string) {
     // If the browser window is already open, a URL change will cause electron to think the request is aborted.
     // When the app loads a URL, the hash is changed immediately. If the window is already open,
     // electron considers this a change in URl and a failure so it errors.
@@ -161,11 +173,14 @@ export class WindowService {
     }
   }
 
+  // TODO this method is untested because it is essentially a library method.
+  // TODO this needs clarifying and simplifying
   /**
    * Taken from vue-cli-plugin-electron-builder to remove import/export because the plugin doesn't ship a dist.
    * If imported directly, it causes issues when dynamically requiring services that might require this file
    */
-  private createProtocol(scheme: string) {
+  /* istanbul ignore next */
+  createProtocol(scheme: string) {
     protocol.registerBufferProtocol(scheme, (request, respond) => {
       let pathName = new URL(request.url).pathname;
       pathName = decodeURI(pathName); // Needed in case URL contains spaces
