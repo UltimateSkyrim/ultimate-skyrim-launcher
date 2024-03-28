@@ -16,7 +16,7 @@ import type Electron from "electron";
 import mockFs from "mock-fs";
 import path from "path";
 
-describe("UpdateService", () => {
+describe("Updateservice #main #service", () => {
   let updateService: UpdateService;
   let mockErrorService: StubbedInstanceWithSinonAccessor<ErrorService>;
   let mockWindowService: StubbedInstanceWithSinonAccessor<WindowService>;

@@ -12,7 +12,7 @@ import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
 
-describe("Profile service", () => {
+describe("Profile service #main #service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
   let profileService: ProfileService;
 

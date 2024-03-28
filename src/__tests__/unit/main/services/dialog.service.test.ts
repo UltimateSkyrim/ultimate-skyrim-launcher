@@ -2,7 +2,7 @@ import { DialogProvider } from "@/main/services/dialog.service";
 import { expect } from "@loopback/testlab";
 import { dialog } from "electron";
 
-describe("Dialog service", () => {
+describe("Dialog service #main #service", () => {
   let dialogService: DialogProvider;
 
   beforeEach(() => {

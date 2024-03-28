@@ -6,7 +6,7 @@ import {
   StubbedInstanceWithSinonAccessor,
 } from "@loopback/testlab";
 
-describe("Graphics controller", () => {
+describe("Graphics controller #main #controller", () => {
   let graphicsService: StubbedInstanceWithSinonAccessor<GraphicsService>;
   let graphicsController: GraphicsController;
 

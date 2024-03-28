@@ -19,7 +19,7 @@ import fs from "fs";
 import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
 import type { AdditionalInstruction } from "@/shared/types/additional-instructions";
 
-describe("ENB service", () => {
+describe("ENB service #main #service", () => {
   let enbService: EnbService;
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
   let mockInstructionService: StubbedInstanceWithSinonAccessor<InstructionService>;

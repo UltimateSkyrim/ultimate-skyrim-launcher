@@ -29,7 +29,7 @@ import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 import type { ElectronLog } from "electron-log";
 import type { ChildProcess } from "@/main/bindings/child-process.binding";
 
-describe("ModOrganizer service", () => {
+describe("ModOrganizer service #main #service", () => {
   let mockEnbService: StubbedInstanceWithSinonAccessor<EnbService>;
   let mockErrorService: StubbedInstanceWithSinonAccessor<ErrorService>;
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;

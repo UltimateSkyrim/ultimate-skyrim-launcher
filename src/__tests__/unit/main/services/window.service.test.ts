@@ -10,7 +10,7 @@ import { getMockElectron } from "@/__tests__/unit/helpers/mocks/electron.mock";
 import type { BrowserWindow } from "electron";
 import { getMockDialog } from "@/__tests__/unit/helpers/mocks/dialog.mock";
 
-describe("Window Service", () => {
+describe("Window service #main #service", () => {
   let windowService: WindowService;
 
   let mockLogger: sinon.SinonStubbedInstance<ElectronLog>;

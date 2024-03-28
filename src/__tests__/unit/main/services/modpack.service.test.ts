@@ -8,7 +8,7 @@ import mockFs from "mock-fs";
 import Store from "electron-store";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 
-describe("Modpack service", () => {
+describe("Modpack service #main #service", () => {
   let modpackService: ModpackService;
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
 

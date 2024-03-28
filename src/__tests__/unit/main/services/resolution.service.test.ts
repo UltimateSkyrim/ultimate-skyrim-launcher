@@ -22,7 +22,7 @@ import type * as child_process from "child_process";
 import os from "os";
 import { parse } from "js-ini";
 
-describe("Resolution service", () => {
+describe("Resolution service #main #service", () => {
   let resolutionService: ResolutionService;
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
   let mockInstructionService: StubbedInstanceWithSinonAccessor<InstructionService>;

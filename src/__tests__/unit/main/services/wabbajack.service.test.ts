@@ -64,7 +64,7 @@ const getMockV3Wabbajack = () => ({
   },
 });
 
-describe("Wabbajack service", () => {
+describe("Wabbajack service #main #service", () => {
   let mockModpackService: StubbedInstanceWithSinonAccessor<ModpackService>;
   let wabbajackService: WabbajackService;
 

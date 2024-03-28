@@ -15,7 +15,7 @@ import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { NoGraphicsError } from "@/shared/errors/no-graphics.error";
 import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
 
-describe("Graphics service", () => {
+describe("Graphics service #main #service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
   let mockProfileService: StubbedInstanceWithSinonAccessor<ProfileService>;
   let graphicsService: GraphicsService;

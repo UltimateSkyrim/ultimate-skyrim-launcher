@@ -6,7 +6,7 @@ import sinon from "sinon";
 import log, { ElectronLog } from "electron-log";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 
-describe("Config Service", () => {
+describe("Config service #main #service", () => {
   let mockStore: Store<UserPreferences>;
   let mockModDirectory: string;
   let mockLogger: sinon.SinonStubbedInstance<ElectronLog>;

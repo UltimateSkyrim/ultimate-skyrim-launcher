@@ -20,7 +20,7 @@ import type child_process from "child_process";
 import { getChildProcessMock } from "@/__tests__/unit/helpers/mocks/child-process.mock";
 import { afterEach } from "mocha";
 
-describe("System service", () => {
+describe("System service #main #service", () => {
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;
   let mockErrorService: StubbedInstanceWithSinonAccessor<ErrorService>;
   let mockLogger: sinon.SinonStubbedInstance<ElectronLog>;

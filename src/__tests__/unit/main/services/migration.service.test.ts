@@ -14,7 +14,7 @@ import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import type { DirectoryItems } from "mock-fs/lib/filesystem";
 import { readFilesFromDirectory } from "@/__tests__/unit/helpers/read-files";
 
-describe("Migration service", () => {
+describe("Migration service #main #service", () => {
   let migrationService: MigrationService;
   let mockGraphicsService: StubbedInstanceWithSinonAccessor<GraphicsService>;
   let mockProfileService: StubbedInstanceWithSinonAccessor<ProfileService>;

@@ -17,7 +17,7 @@ import { ModpackService } from "@/main/services/modpack.service";
 import { getMockLogger } from "@/__tests__/unit/helpers/mocks/logger.mock";
 import { USER_PREFERENCE_KEYS } from "@/shared/enums/userPreferenceKeys";
 
-describe("Launcher service", () => {
+describe("Launcher service #main #service", () => {
   let launcherService: LauncherService;
   let mockEnbService: StubbedInstanceWithSinonAccessor<EnbService>;
   let mockConfigService: StubbedInstanceWithSinonAccessor<ConfigService>;

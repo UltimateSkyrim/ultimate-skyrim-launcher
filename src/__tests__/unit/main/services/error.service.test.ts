@@ -5,7 +5,7 @@ import { getMockDialog } from "@/__tests__/unit/helpers/mocks/dialog.mock";
 import { sinon, StubbedInstanceWithSinonAccessor } from "@loopback/testlab";
 import type { Dialog } from "electron";
 
-describe("Error Service", () => {
+describe("Error service #main #service", () => {
   let errorService: ErrorService;
   let mockLogger: sinon.SinonStubbedInstance<ElectronLog>;
   let mockDialog: StubbedInstanceWithSinonAccessor<Dialog>;

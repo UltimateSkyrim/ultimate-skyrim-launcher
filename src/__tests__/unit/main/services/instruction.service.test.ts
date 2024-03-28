@@ -19,7 +19,7 @@ import {
   InstructionType,
 } from "@/shared/enums/additional-instructions";
 
-describe("Instruction service", () => {
+describe("Instruction service #main #service", () => {
   let instructionService: InstructionService;
   let mockProfileService: StubbedInstanceWithSinonAccessor<ProfileService>;
   let mockWabbajackService: StubbedInstanceWithSinonAccessor<WabbajackService>;

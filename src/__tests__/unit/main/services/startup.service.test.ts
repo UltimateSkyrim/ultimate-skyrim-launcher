@@ -18,7 +18,7 @@ import type { ElectronLog } from "electron-log";
 import type electron from "electron";
 import os from "os";
 
-describe("Startup service", () => {
+describe("Startup service #main #service", () => {
   let mockModpackService: StubbedInstanceWithSinonAccessor<ModpackService>;
   let mockLauncherService: StubbedInstanceWithSinonAccessor<LauncherService>;
   let mockWabbajackService: StubbedInstanceWithSinonAccessor<WabbajackService>;
