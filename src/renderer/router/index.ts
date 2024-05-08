@@ -36,6 +36,13 @@ const checkModDirectory =
 const getRoutes = (modpackService: ModpackService): RouteRecordRaw[] =>
   [
     {
+      path: "/health",
+      name: "Health",
+      component: {
+        template: "<div>Healthy</div>",
+      },
+    },
+    {
       path: "/",
       name: HomeRouteName,
       component: ViewHome,

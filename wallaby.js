@@ -7,7 +7,7 @@ module.exports = function (w) {
       "!src/__tests__/**/*.test.ts",
       "tsconfig.json",
     ],
-    tests: ["src/__tests__/**/*.test.ts"],
+    tests: ["src/__tests__/unit/**/*.test.ts"],
 
     testFramework: "mocha",
 

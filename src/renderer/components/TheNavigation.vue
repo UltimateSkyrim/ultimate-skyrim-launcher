@@ -1,8 +1,13 @@
 <template>
   <nav class="c-navigation">
     <div class="c-navigation__actions">
-      <BaseButton type="primary" size="grow" @click="launchGame"
-        >Launch Game
+      <BaseButton
+        type="primary"
+        size="grow"
+        data-testid="launch-game"
+        @click="launchGame"
+      >
+        Launch Game
       </BaseButton>
 
       <ProfileSelection />

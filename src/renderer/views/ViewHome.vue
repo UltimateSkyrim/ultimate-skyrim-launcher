@@ -1,11 +1,17 @@
 <template>
-  <AppPageContent :spacing="false" :scrollable="true">
-    <News />
-  </AppPageContent>
+  <span data-testid="page-home">
+    <AppPageContent :spacing="false" :scrollable="true">
+      <News />
+    </AppPageContent>
 
-  <AppPageContent title="Patron Highlight" :spacing="false" :scrollable="true">
-    <Patrons />
-  </AppPageContent>
+    <AppPageContent
+      title="Patron Highlight"
+      :spacing="false"
+      :scrollable="true"
+    >
+      <Patrons />
+    </AppPageContent>
+  </span>
 </template>
 
 <script lang="ts">

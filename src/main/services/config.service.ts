@@ -5,6 +5,7 @@ import path from "path";
 import { BindingScope, inject, injectable } from "@loopback/context";
 import { Logger, LoggerBinding } from "@/main/logger";
 import fs from "fs";
+import { ConfigBinding } from "@/main/bindings/config.binding";
 
 export const appRoot = path.resolve(`${__dirname}/../../`);
 export interface UserPreferences {
@@ -31,12 +32,16 @@ export type PreferenceWithValidator = {
 export class ConfigService {
   constructor(
     @inject(LoggerBinding) private logger: Logger,
-    // Ignore the default because it is overridden for testing
-    /* istanbul ignore next */
-    private readonly config = new Store<UserPreferences>({
-      name: "userPreferences",
-    })
+    @inject(ConfigBinding)
+    private readonly config: Store<UserPreferences>
   ) {}
+
+  static getNewUserPreferencesStore(): Store<UserPreferences> {
+    return new Store<UserPreferences>({
+      name: "userPreferences",
+      ...(process.env["CONFIG_PATH"] && { cwd: process.env["CONFIG_PATH"] }),
+    });
+  }
 
   skyrimDirectory() {
     return `${this.modDirectory()}/Stock Game`;

@@ -5,3 +5,4 @@ babel.config.js
 lint-staged.config.js
 vue.config.js
 **/*.eslintrc*
+src/__tests__/e2e/util/files/

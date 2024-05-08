@@ -2,6 +2,7 @@
   <BaseLabel :label="label" />
   <AppDropdownFileSelect
     v-if="modpacks"
+    data-testid="mod-directory-select"
     :options="modpacks"
     :current-selection="modDirectory"
     default-text="Select mod directory..."

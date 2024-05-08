@@ -3,6 +3,7 @@ const dependencies = require("./package.json").dependencies;
 module.exports = {
   configureWebpack: {
     externals: {
+      // TODO can this be removed?
       electron: "window",
       "@/main/logger": "window",
     },

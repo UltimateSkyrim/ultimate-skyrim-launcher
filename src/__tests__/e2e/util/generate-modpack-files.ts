@@ -16,11 +16,7 @@ import { skyrimPrefs } from "./files/profiles/SkyrimPrefs.ini";
 
 type DirectoryStructure = { [name: string]: string | DirectoryStructure };
 
-const rootPath = path.resolve(`${__dirname}/../mock-files`);
-const modpackPath = `${rootPath}/mock-modpack-install`;
-const appDataPath = `${rootPath}/local`;
-
-const createDirectoryStructure = (
+export const createDirectoryStructure = (
   directoryObject: DirectoryStructure,
   basePath = ""
 ) => {
@@ -62,7 +58,7 @@ echo "Ran ${name} executable"
 /**
  * The files that are needed by the launcher for a "valid" modpack
  */
-const mockModpack: DirectoryStructure = {
+export const mockModpack: DirectoryStructure = {
   "ModOrganizer.exe": executable("ModOrganizer"),
   "ModOrganizer.ini": ModOrganizerIni,
   mods: {
@@ -145,13 +141,16 @@ const mockModpack: DirectoryStructure = {
  * Wabbajack saves its settings to APPDATA.
  * If working on a system that isn't windows, this can be useful to mock APPDATA.
  */
-const mockAPPDATALocal: DirectoryStructure = {
+export const getMockAPPDATALocal = (
+  installPath: string
+): DirectoryStructure => ({
   Wabbajack: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     saved_settings: {
       "install-settings-1234567890123456.json": JSON.stringify({
-        ModListLocation: modpackPath,
-        InstallLocation: modpackPath,
-        DownloadLocation: modpackPath,
+        ModListLocation: installPath,
+        InstallLocation: installPath,
+        DownloadLocation: installPath,
         Metadata: {
           title: "Wildlander",
           description:
@@ -174,8 +173,15 @@ const mockAPPDATALocal: DirectoryStructure = {
       }),
     },
   },
-};
+});
 
-removeSync(rootPath);
-createDirectoryStructure(mockModpack, modpackPath);
-createDirectoryStructure(mockAPPDATALocal, appDataPath);
+// File has been run via the cli so create the files
+if (process.argv[1] === __filename) {
+  const rootPath = path.resolve(`${__dirname}/../../../../mock-files`);
+  const modpackPath = `${rootPath}/mock-modpack-install`;
+  const appDataPath = `${rootPath}/local`;
+
+  removeSync(rootPath);
+  createDirectoryStructure(mockModpack, modpackPath);
+  createDirectoryStructure(getMockAPPDATALocal(modpackPath), appDataPath);
+}

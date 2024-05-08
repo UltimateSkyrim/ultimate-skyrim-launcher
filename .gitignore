@@ -26,8 +26,9 @@ pnpm-debug.log*
 
 dev-app-update.yml
 
-# Mock directory to replicate %APPDATA%
-local
 mock-modpack-install
 mock-files
 .windows-data
+
+# Playwright
+.playwright

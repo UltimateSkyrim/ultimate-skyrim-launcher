@@ -9,7 +9,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./**/*.ts", "../shared/types/*.ts"],
+  "include": ["./**/*.{ts,json}", "../shared/types/*.ts"],
   "references": [
     {
       "path": "../shared"

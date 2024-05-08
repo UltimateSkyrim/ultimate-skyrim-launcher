@@ -39,6 +39,7 @@
         </span>
       </div>
       <div
+        data-testid="dropdown-options"
         class="c-select__options u-scroll-y-auto u-text"
         :class="{
           'c-select__options--open': isOpen && !loading,
@@ -48,8 +49,9 @@
         }"
       >
         <div
-          v-for="option in options.filter((x) => !x.hidden)"
+          v-for="(option, index) in options.filter((x) => !x.hidden)"
           :key="option.value"
+          :data-testid="`dropdown-options-${index}`"
           class="c-select__option l-center-vertically"
           :class="{
             'c-select__option--disabled': option.disabled,

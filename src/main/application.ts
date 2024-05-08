@@ -19,6 +19,8 @@ import { AutoUpdaterBinding } from "@/main/bindings/autoUpdater.binding";
 import { autoUpdater } from "electron-updater";
 import contextMenu from "electron-context-menu";
 import { ContextMenuBinding } from "@/main/bindings/context-menu.binding";
+import { ConfigBinding } from "@/main/bindings/config.binding";
+import { ConfigService } from "@/main/services/config.service";
 
 const serviceNamespace = "services";
 
@@ -106,5 +108,6 @@ export class LauncherApplication extends BootMixin(Application) {
     this.bind(PsListBinding).to(psList);
     this.bind(AutoUpdaterBinding).to(autoUpdater);
     this.bind(ContextMenuBinding).to(contextMenu);
+    this.bind(ConfigBinding).to(ConfigService.getNewUserPreferencesStore());
   }
 }
