@@ -12,6 +12,11 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./src/__tests__/e2e",
   testMatch: /.*\.e2e\..*/,
+
+  globalSetup: "./src/__tests__/e2e/util/global-setup.ts",
+
+  globalTeardown: "./src/__tests__/e2e/util/global-teardown.ts",
+
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -48,5 +53,7 @@ export default defineConfig({
     command: "npm run start:renderer",
     url: "http://127.0.0.1:8080/health",
     reuseExistingServer: !process.env["CI"],
+    stdout: "ignore",
+    stderr: "ignore",
   },
 });

@@ -7,6 +7,16 @@ import { config } from "./config";
 import fs from "fs/promises";
 import { _electron as electron, Page, test as Test } from "@playwright/test";
 import type { ElectronApplication } from "playwright";
+import { randomBytes } from "crypto";
+
+type WindowWithCoverage = Page & {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __coverage__: Record<string, unknown>;
+};
+
+const UUID = (): string => {
+  return randomBytes(16).toString("hex");
+};
 
 /**
  * Create mock files for the launcher to use.
@@ -65,8 +75,28 @@ export const startTestApp = async (
 
   const closeTestApp = async () => {
     await fs.rm(mockFiles, { recursive: true });
+
+    await saveCoverage(window);
+
     return electronApp.close();
   };
 
   return { mockFiles, window, electronApp, closeTestApp };
+};
+
+const saveCoverage = async (page: Page) => {
+  const coveragePath = `${config().paths.playwright}/coverage`;
+
+  await fs.mkdir(coveragePath, {
+    recursive: true,
+  });
+
+  const coverage = await page.evaluate(
+    () => (window as WindowWithCoverage).__coverage__
+  );
+
+  await fs.writeFile(
+    `${coveragePath}/${UUID()}.json`,
+    JSON.stringify(coverage, null, 2)
+  );
 };

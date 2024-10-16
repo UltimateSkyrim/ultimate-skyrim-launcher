@@ -1,121 +1,135 @@
 <template>
-  <AppPageContent width="large">
-    <div class="c-settings l-column">
-      <div class="c-settings__directories l-column">
-        <ModDirectory />
-      </div>
+  <span data-testid="page-home">
+    <AppPageContent width="large">
+      <div class="c-settings l-column">
+        <div class="c-settings__directories l-column">
+          <ModDirectory />
+        </div>
 
-      <div class="l-row">
-        <div class="l-column l-start c-settings__section">
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Mod Organizer 2</div>
-            <div class="c-settings__action">
-              <BaseButton type="primary" size="large" @click="launchMO2">
-                Launch
-              </BaseButton>
-            </div>
-          </div>
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Application logs</div>
-            <div class="c-settings__action c-settings__multi-buttons">
-              <BaseButton
-                class="c-settings__multi-button"
-                type="default"
-                size="grow"
-                @click="openLogPath"
-              >
-                Open
-              </BaseButton>
-              <BaseButton
-                class="c-settings__multi-button"
-                type="default"
-                size="grow"
-                @click="clearLogs"
-              >
-                Clear
-              </BaseButton>
-            </div>
-          </div>
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Skyrim crash logs</div>
-            <div class="c-settings__action">
-              <BaseButton type="default" size="large" @click="openCrashLogPath">
-                Open
-              </BaseButton>
-            </div>
-          </div>
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Edit launcher config</div>
-            <Popper
-              :arrow="true"
-              :interactive="false"
-              placement="top"
-              :hover="true"
-            >
-              <template #content>
-                Note: you will need to restart the app or re-select the modpack
-                for changes to take effect.
-              </template>
+        <div class="l-row">
+          <div class="l-column l-start c-settings__section">
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Mod Organizer 2</div>
               <div class="c-settings__action">
-                <BaseButton type="default" size="large" @click="editConfig"
-                  >Edit
+                <BaseButton type="primary" size="large" @click="launchMO2">
+                  Launch
                 </BaseButton>
               </div>
-            </Popper>
-          </div>
-          <div class="l-row c-settings__actions c-settings__section">
-            <div class="c-settings__label">Show hidden profiles</div>
-            <div class="c-settings__action c-settings__action--toggle">
-              <Toggle
-                v-model="showHiddenProfiles"
-                @click="setShowHiddenProfiles"
-              />
             </div>
-          </div>
-          <div class="l-row c-settings__actions c-settings__section">
-            <div class="c-settings__label">Check pre-requisites</div>
-            <div class="c-settings__action c-settings__action--toggle">
-              <Toggle
-                v-model="checkPrerequisites"
-                @click="setCheckPrerequisites"
-              />
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Application logs</div>
+              <div class="c-settings__action c-settings__multi-buttons">
+                <BaseButton
+                  class="c-settings__multi-button"
+                  type="default"
+                  size="grow"
+                  @click="openLogPath"
+                >
+                  Open
+                </BaseButton>
+                <BaseButton
+                  class="c-settings__multi-button"
+                  type="default"
+                  size="grow"
+                  @click="clearLogs"
+                >
+                  Clear
+                </BaseButton>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div class="l-column l-start">
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Restore ENB presets</div>
-            <div class="c-settings__action">
-              <BaseButton
-                type="warning"
-                size="large"
-                @click="restoreENBPresets"
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Skyrim crash logs</div>
+              <div class="c-settings__action">
+                <BaseButton
+                  type="default"
+                  size="large"
+                  @click="openCrashLogPath"
+                >
+                  Open
+                </BaseButton>
+              </div>
+            </div>
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Edit launcher config</div>
+              <Popper
+                :arrow="true"
+                :interactive="false"
+                placement="top"
+                :hover="true"
               >
-                Restore
-              </BaseButton>
+                <template #content>
+                  Note: you will need to restart the app or re-select the
+                  modpack for changes to take effect.
+                </template>
+                <div class="c-settings__action">
+                  <BaseButton type="default" size="large" @click="editConfig"
+                    >Edit
+                  </BaseButton>
+                </div>
+              </Popper>
+            </div>
+            <div class="l-row c-settings__actions c-settings__section">
+              <div class="c-settings__label">Show hidden profiles</div>
+              <div class="c-settings__action c-settings__action--toggle">
+                <Toggle
+                  v-model="showHiddenProfiles"
+                  @click="setShowHiddenProfiles"
+                />
+              </div>
+            </div>
+            <div class="l-row c-settings__actions c-settings__section">
+              <div class="c-settings__label">Check pre-requisites</div>
+              <div class="c-settings__action c-settings__action--toggle">
+                <Toggle
+                  v-model="checkPrerequisites"
+                  @click="setCheckPrerequisites"
+                />
+              </div>
             </div>
           </div>
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Restore MO2 profiles</div>
-            <div class="c-settings__action">
-              <BaseButton type="warning" size="large" @click="restoreProfiles">
-                Restore
-              </BaseButton>
+
+          <div class="l-column l-start">
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Restore ENB presets</div>
+              <div class="c-settings__action">
+                <BaseButton
+                  type="warning"
+                  size="large"
+                  @click="restoreENBPresets"
+                >
+                  Restore
+                </BaseButton>
+              </div>
             </div>
-          </div>
-          <div class="l-row c-settings__actions">
-            <div class="c-settings__label">Restore graphics presets</div>
-            <div class="c-settings__action">
-              <BaseButton type="warning" size="large" @click="restoreGraphics">
-                Restore
-              </BaseButton>
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Restore MO2 profiles</div>
+              <div class="c-settings__action">
+                <BaseButton
+                  type="warning"
+                  size="large"
+                  @click="restoreProfiles"
+                >
+                  Restore
+                </BaseButton>
+              </div>
+            </div>
+            <div class="l-row c-settings__actions">
+              <div class="c-settings__label">Restore graphics presets</div>
+              <div class="c-settings__action">
+                <BaseButton
+                  type="warning"
+                  size="large"
+                  @click="restoreGraphics"
+                >
+                  Restore
+                </BaseButton>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </AppPageContent>
+    </AppPageContent>
+  </span>
 </template>
 
 <script lang="ts">

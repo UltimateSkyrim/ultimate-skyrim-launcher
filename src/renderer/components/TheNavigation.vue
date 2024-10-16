@@ -52,7 +52,12 @@
           }"
           custom
         >
-          <NavigationItem :active="isActive" :href="href" @click="navigate">
+          <NavigationItem
+            :active="isActive"
+            :href="href"
+            data-testId="navigation-advanced"
+            @click="navigate"
+          >
             Advanced
           </NavigationItem>
         </router-link>
