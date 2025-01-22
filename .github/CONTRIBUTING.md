@@ -2,6 +2,20 @@
 
 ## Install dependencies
 
+_Note: currently only supports Node 16 and requires python 2.7_
+
+### Install python
+
+Install pyenv and then 
+
+```shell
+pyenv install 2.7.18
+```
+
+```shell
+export PATH="${HOME}/.pyenv/shims:${PATH}"
+```
+
 ```
 npm install
 ```

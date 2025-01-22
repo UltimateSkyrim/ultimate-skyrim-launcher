@@ -127,6 +127,7 @@
     "nock": "^13.5.4",
     "node-sass": "^6.0.1",
     "nodemon": "^2.0.15",
+    "nyc": "^15.1.0",
     "prettier": "^2.8.7",
     "reflect-metadata": "^0.1.13",
     "sass-loader": "^10.2.0",

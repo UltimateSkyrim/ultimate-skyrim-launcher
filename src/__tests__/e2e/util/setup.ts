@@ -14,6 +14,11 @@ type WindowWithCoverage = Page & {
   __coverage__: Record<string, unknown>;
 };
 
+type GlobalWithCoverage = NodeJS.Global & {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  __coverage__: Record<string, unknown>;
+};
+
 const UUID = (): string => {
   return randomBytes(16).toString("hex");
 };
@@ -52,7 +57,7 @@ export const startTestApp = async (
 
   // Launch Electron app.
   const electronApp = await electron.launch({
-    args: ["dist/main.js"],
+    args: [`${config().paths.instrumented}/main.js`],
     env: {
       CONFIG_PATH: `${mockFiles}/config`,
       APPDATA: `${mockFiles}/APPDATA`,
@@ -76,7 +81,17 @@ export const startTestApp = async (
   const closeTestApp = async () => {
     await fs.rm(mockFiles, { recursive: true });
 
-    await saveCoverage(window);
+    await saveCoverage(
+      window,
+      "renderer",
+      () => (window as WindowWithCoverage).__coverage__
+    );
+
+    await saveCoverage(
+      electronApp,
+      "main",
+      () => (global as GlobalWithCoverage).__coverage__
+    );
 
     return electronApp.close();
   };
@@ -84,19 +99,19 @@ export const startTestApp = async (
   return { mockFiles, window, electronApp, closeTestApp };
 };
 
-const saveCoverage = async (page: Page) => {
-  const coveragePath = `${config().paths.playwright}/coverage`;
-
-  await fs.mkdir(coveragePath, {
+const saveCoverage = async (
+  page: Page | ElectronApplication,
+  preface: "main" | "renderer",
+  coverageCallback: () => Record<string, unknown>
+) => {
+  await fs.mkdir(config().paths.coverage, {
     recursive: true,
   });
 
-  const coverage = await page.evaluate(
-    () => (window as WindowWithCoverage).__coverage__
-  );
+  const coverage = await page.evaluate(coverageCallback);
 
   await fs.writeFile(
-    `${coveragePath}/${UUID()}.json`,
+    `${config().paths.coverage}/${preface}-${UUID()}.json`,
     JSON.stringify(coverage, null, 2)
   );
 };

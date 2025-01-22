@@ -95,6 +95,7 @@
                 <BaseButton
                   type="warning"
                   size="large"
+                  data-testid="restore-enb-presets"
                   @click="restoreENBPresets"
                 >
                   Restore
