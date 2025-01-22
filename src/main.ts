@@ -5,12 +5,13 @@ import { ErrorService } from "./main/services/error.service";
 import { WindowService } from "./main/services/window.service";
 import { newLogInstance } from "./main/logger";
 
+const logger = newLogInstance("Startup logger");
+
 const isSingleInstance = app.requestSingleInstanceLock();
-if (!isSingleInstance) {
+if (process.env["MULTIPLE_INSTANCE"] !== "true" && !isSingleInstance) {
+  logger.debug("Secondary instance opened, quitting");
   app.quit();
 }
-
-const logger = newLogInstance("Startup logger");
 
 // Ensure it's easy to tell where the logs for this application start
 const initialLog = `|             ${new Date().toLocaleString()}             |`;

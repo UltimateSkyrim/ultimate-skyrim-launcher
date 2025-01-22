@@ -14,7 +14,7 @@ async function displayCoverage(): Promise<void> {
     const hasCoverage = files.some((file) => file.endsWith(".json"));
 
     if (!hasCoverage) {
-      console.log("No coverage data found.");
+      console.warn("No coverage data found.");
       return;
     }
 
@@ -54,8 +54,16 @@ async function displayCoverage(): Promise<void> {
   }
 }
 
+const clearMockFiles = async () => {
+  await fs.rm(`${config().paths.mockFiles}`, { recursive: true, force: true });
+};
+
 async function globalTeardown() {
-  await displayCoverage();
+  if (process.env["COVERAGE"] !== "false") {
+    await displayCoverage();
+  }
+
+  await clearMockFiles();
 }
 
 export default globalTeardown;

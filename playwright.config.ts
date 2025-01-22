@@ -17,8 +17,10 @@ export default defineConfig({
 
   globalTeardown: "./src/__tests__/e2e/util/global-teardown.ts",
 
+  // TODO can parallel be enabled with later electron versions?
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
+  workers: 1,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env["CI"],
   /* Retry on CI only */

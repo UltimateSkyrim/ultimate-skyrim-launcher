@@ -1,11 +1,13 @@
 import path from "path";
 
 const root = path.resolve(`${__dirname}/../../../..`);
+const playwrightDir = `${root}/.playwright`;
 
 export const config = () => ({
   paths: {
     root,
-    playwright: `${root}/.playwright`,
-    mockFiles: `${root}/.playwright/mock-files`,
+    playwright: playwrightDir,
+    screenshots: `${playwrightDir}/screenshots/`,
+    mockFiles: `${playwrightDir}/mock-files`,
   },
 });

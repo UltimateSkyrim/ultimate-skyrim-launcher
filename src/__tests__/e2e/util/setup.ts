@@ -69,7 +69,7 @@ export const startTestApp = async (
   const window = await electronApp.firstWindow();
 
   if (process.env["DEBUG"]) {
-    // Direct Electron console to Node terminal.
+    // Direct Electron Renderer console to Node terminal.
     window.on("console", console.log);
   }
 
@@ -99,4 +99,15 @@ const saveCoverage = async (page: Page) => {
     `${coveragePath}/${UUID()}.json`,
     JSON.stringify(coverage, null, 2)
   );
+};
+
+export const screenshot = async (
+  window: Page,
+  test: typeof Test,
+  name: string
+) => {
+  return window.screenshot({
+    path: `${config().paths.screenshots}/${test.name}/${name}.png`,
+    fullPage: true,
+  });
 };
