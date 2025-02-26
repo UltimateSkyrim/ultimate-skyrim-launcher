@@ -11,11 +11,14 @@ describe("Config service #main #service", () => {
   let mockModDirectory: string;
   let mockLogger: sinon.SinonStubbedInstance<ElectronLog>;
   let configService: ConfigService;
+  let originalEnv: NodeJS.ProcessEnv;
 
   let mockUserConfig: string;
   let preferenceFile: string;
 
   beforeEach(() => {
+    originalEnv = Object.assign({}, process.env);
+
     mockUserConfig = "/mock/config";
     preferenceFile = "userPreferences";
     mockModDirectory = "mock/mod/directory";
@@ -49,6 +52,8 @@ describe("Config service #main #service", () => {
   });
 
   afterEach(() => {
+    process.env = Object.assign({}, originalEnv);
+
     sinon.restore();
     mockFs.restore();
   });
@@ -207,5 +212,20 @@ describe("Config service #main #service", () => {
     const mockEditor = sinon.stub(mockStore, "openInEditor");
     configService.editPreferences();
     expect(mockEditor.calledOnce).to.eql(true);
+  });
+
+  describe("getNewUserPreferencesStore", () => {
+    it("should return a Store instance with custom 'cwd' when CONFIG_PATH is set", () => {
+      process.env["CONFIG_PATH"] = "/mock/custom/config/path";
+      mockFs({
+        "/mock/custom/config/path": {},
+      });
+
+      const store = ConfigService.getNewUserPreferencesStore();
+      expect(store).to.be.instanceOf(Store);
+      expect(store.path).to.equal(
+        "/mock/custom/config/path/userPreferences.json"
+      );
+    });
   });
 });

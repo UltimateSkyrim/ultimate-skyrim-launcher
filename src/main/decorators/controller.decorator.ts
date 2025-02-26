@@ -11,6 +11,7 @@ const HandlersMetadataKey = Symbol("handlers");
 const logger = log.create("decorator");
 type HandlerMap = Map<string, (...args: unknown[]) => unknown>;
 
+/* istanbul ignore next */
 /**
  Add a method to controllers that can be called to register all IPC handlers.
  This is then automatically be called by the booter.
